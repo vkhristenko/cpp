@@ -5,7 +5,7 @@
 //#include <pair>
 
 class employee_t {
-public:
+private:
     unsigned int id;
     std::string name;
     std::string role;
@@ -25,7 +25,24 @@ public:
         id(std::move(other.id)), name(std::move(other.name)),
         role(std::move(other.role)), salary(std::move(other.salary))
     {}
+
+    template<std::size_t N>
+    decltype(auto) get() const {
+        if constexpr (N == 0) return id;
+        else if constexpr (N == 1) return std::string_view{name};
+        else if constexpr (N == 2) return std::string_view{role};
+        else if constexpr (N == 3) return salary;
+    }
 };
+
+namespace std {
+    template<>
+    struct tuple_size<::employee_t> : std::integral_constant<std::size_t, 4>{};
+    template<std::size_t N>
+    struct tuple_element<N, ::employee_t> {
+        using type = decltype(std::declval<employee_t>().get<N>());
+    };
+}
 
 int main() {
     std::vector<employee_t> vx;
