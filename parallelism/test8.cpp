@@ -38,7 +38,7 @@ void producer(size_t id, size_t items, size_t stock) {
             << setw(3) << q.back() << "\n";
 
         go_consume.notify_all();
-        this_thread::sleep_for(90ms);
+//        this_thread::sleep_for(90ms);
     }
 
     par::cout{} << "EXIT: Producer: " << id << "\n";
@@ -57,7 +57,7 @@ void consumer(size_t id) {
             q.pop();
 
             go_produce.notify_all();
-            this_thread::sleep_for(130ms);
+            this_thread::sleep_for(500ms);
         }
     }
 
@@ -69,7 +69,7 @@ int main() {
     vector<thread> consumers;
 
     for (size_t i=0; i<3; i++)
-        producers.emplace_back(producer, i, 15, 5);
+        producers.emplace_back(producer, i, 100, 20);
     for (size_t i=0; i<5; i++)
         consumers.emplace_back(consumer, i);
 
