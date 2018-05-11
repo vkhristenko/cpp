@@ -5,6 +5,25 @@
 
 using namespace std;
 
+template<typename T>
+void func(T&& param) {
+    std::cout << "-----" << std::endl;
+    std::cout << "is_reference = " 
+        << std::is_reference<decltype(param)>::value << std::endl;
+    std::cout << "is_const = " 
+        << std::is_const<decltype(param)>::value << std::endl;
+    std::cout << "is_lvalue_reference = " 
+        << std::is_lvalue_reference<decltype(param)>::value << std::endl;
+    std::cout << "is_rvalue_reference = " 
+        << std::is_rvalue_reference<decltype(param)>::value << std::endl;
+    std::cout << typeid(param).name() << std::endl;
+}
+
+template<typename T>
+T func3(T&& t) {
+    return t;
+}
+
 namespace my {
 
 template<typename T>
@@ -113,4 +132,10 @@ int main() {
     std::cout << "is_rvalue_reference = " 
         << std::is_rvalue_reference<decltype(a13)>::value << std::endl;
 #endif
+
+    func(10);
+    int a = 10;
+    func(a);
+    func(a12);
+    func(std::move(a12));
 }
