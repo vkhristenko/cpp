@@ -14,4 +14,10 @@ int main() {
 
     name_greeter greeter {"some name"};
     greeter();
+
+    auto greeter1([] {
+        std::cout << "hello, some name\n";
+    });
+
+    greeter1();
 }
