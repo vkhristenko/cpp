@@ -20,16 +20,39 @@ public:
     int getHeight() const {
         return height;
     }
-    void setWidth(int width) {
+    virtual void setWidth(int width) {
         Rectangle::width = width;
     }
-    void setHeight(int height) {
+    virtual void setHeight(int height) {
         Rectangle::height = height;
+    }
+
+    int area() const { return width * height;}
+};
+
+class Square : public Rectangle {
+public: 
+    Square(int size) : Rectangle(size, size) {}
+
+    void setWidth(int width) override {
+        this->width = this->height = width;
+    }
+    void setHeight(int height) override {
+        this->setWidth(height);
     }
 };
 
+void process(Rectangle& r) {
+    int w = r.getWidth();
+    r.setHeight(10);
+
+    cout << "expected area = " << (w*10)
+         << ", got " << r.area() << endl;
+}
+
 int main() {
-//    getchar();
+    Rectangle r{3,4};
+    process(r);
     
     return 0;
 }
