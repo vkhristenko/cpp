@@ -1,6 +1,7 @@
 # Notes
 
 # Single Responsibility Principle and Separation of Concerns
+- separation of concerns
 
 # Open Closed Principle
 - Specification pattern
@@ -11,6 +12,7 @@
 
 # Interface Segregetion Principle
 - avoid stuffing too much into an interface
+YAGNI - you ain't going to need it
 
 # Dependency Inversion Principle
 - high level modules should not depend on low-level modules. Both should depend on abstractions
