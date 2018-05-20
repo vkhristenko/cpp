@@ -7,3 +7,4 @@
 - to build DSL
 
 ## Builder Facade
+- split builders into several and allow to jump from one to another...
