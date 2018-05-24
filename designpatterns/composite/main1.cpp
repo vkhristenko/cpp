@@ -45,18 +45,15 @@ struct Neuron : SomeNeurons<Neuron> {
 
 template<typename Self>
 template<typename T> void SomeNeurons<Self>::connect_to(T &other){
-    std::cout << "111" << std::endl;
     for (Neuron &from : *static_cast<Self*>(this)) {
-        std::cout << 222 << std::endl;
         for (Neuron &to : other) {
-            std::cout << "333" << std::endl;
             from.out.push_back(&to);
             to.in.push_back(&from);
         }
     }
 }
 
-struct NeuronLayer : vector<Neuron>, SomeNeurons<Neuron> {
+struct NeuronLayer : vector<Neuron>, SomeNeurons<NeuronLayer> {
     NeuronLayer(int count) {
         while (count --> 0)
             emplace_back(Neuron{});
