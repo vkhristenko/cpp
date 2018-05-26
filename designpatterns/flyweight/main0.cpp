@@ -5,6 +5,7 @@
 #include <fstream>
 #include <boost/lexical_cast.hpp>
 #include <boost/bimap.hpp>
+#include <boost/flyweight.hpp>
 
 using namespace std;
 using namespace boost;
@@ -51,11 +52,29 @@ protected:
 key User::seed{0};
 bimap<key, std::string> User::names{};
 
+struct User2 {
+    flyweight<std::string> first_name, last_name;
+
+    User2(std::string const& first_name, 
+          std::string const& last_name) 
+        : first_name(first_name), last_name(last_name) {
+        
+    }
+};
+
 int main() {
     User user1{"john", "doe"};
     User user2{"john", "smith"};
 
     std::cout << user1 << std::endl << user2 << std::endl;
     
+    User2 first {"john", "smith"};
+    User2 second {"jane", "smith"};
+
+    std::cout << first.first_name << std::endl;
+    std::cout << std::boolalpha;
+    std::cout << (&first.first_name.get() == &second.first_name.get()) << std::endl;
+    std::cout << (&first.last_name.get() == &second.last_name.get()) << std::endl;
+
     return 0;
 }
