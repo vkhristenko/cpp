@@ -23,7 +23,7 @@ struct Property {
         std::cout << "assignment!\n";
         return value = new_value;
     }
-}
+};
 
 struct Creature {
     Property<int> strength{10};
