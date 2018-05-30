@@ -73,6 +73,48 @@ struct BankAccountCommand : Command {
     }
 };
 
+struct CompositeBankAccountCommand : std::vector<BankAccountCommand>, Command {
+    CompositeBankAccountCommand(std::initializer_list<BankAccountCommand> const& ilist)
+        : std::vector<BankAccountCommand>(ilist) 
+    {}
+
+    void call() override {
+        for (auto& cmd : *this)
+            cmd.call();
+    }
+
+    void undo() override {
+        for (auto it=this->rbegin(); it!=this->rend(); ++it)
+            it->undo();
+    }
+};
+
+struct DependentCompositeCommand : CompositeBankAccountCommand {
+    DependentCompositeCommand(std::initializer_list<BankAccountCommand> const& ilist)
+        : CompositeBankAccountCommand(ilist) {}
+
+    void call() override {
+        bool ok = true;
+        for (auto &cmd : *this) {
+            if (ok) {
+                cmd.call();
+                ok = cmd.succeeded;
+            } else {
+                cmd.succeeded = false;
+            }
+        }
+    }
+};
+
+struct MoneyTransferCommand : DependentCompositeCommand {
+    MoneyTransferCommand(BankAccount &from, BankAccount &to, int amount) 
+        : DependentCompositeCommand({
+            BankAccountCommand{from, BankAccountCommand::withdraw, amount},
+            BankAccountCommand{to, BankAccountCommand::deposit, amount}
+        }) {
+    }
+};
+
 int main() {
 
     BankAccount ba;
@@ -91,6 +133,15 @@ int main() {
         it->undo();
 
     std::cout << ba.balance << std::endl;
-    
+
+    BankAccount ba1, ba2;
+    ba1.deposit(100);
+    MoneyTransferCommand mtc {ba1, ba2, 5000};
+    mtc.call();
+
+    std::cout << ba1.balance << "  " << ba2.balance << std::endl;
+    mtc.undo();
+    std::cout << ba1.balance << "  " << ba2.balance << std::endl;
+
     return 0;
 }
