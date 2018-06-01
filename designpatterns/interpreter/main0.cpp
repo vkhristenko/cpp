@@ -37,6 +37,9 @@ std::vector<Token> lex(std::string const& input) {
             case ')':
                 result.push_back(Token{Token::rparen, ")"});
                 break;
+            case 'a' ... 'b':
+                std::cout << "here we go" << std::endl;
+                break;
             default: // integer
                 ostringstream buffer;
                 buffer << input[i];
