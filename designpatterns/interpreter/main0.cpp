@@ -7,7 +7,6 @@
 #include <boost/lexical_cast.hpp>
 
 using namespace std;
-using namespace boost;
 
 struct Token {
     enum Type { integer, plus, minus, lparen, rparen } type;
@@ -88,17 +87,19 @@ std::shared_ptr<Element> parse(std::vector<Token> const& tokens) {
     auto result = std::make_shared<BinaryOperation>();
     bool have_lhs{false};
 
-    for (int i=0; i<tokens.size(); i++) {
+    for (int i=0; i<tokens.size(); ++i) {
+        std::cout << i << "  " << tokens.size() << std::endl;
         auto &token = tokens[i];
         switch (token.type) {
-            case Token::integer: 
-                int value = lexical_cast<int>(token.text);
+            case Token::integer: {
+                int value = boost::lexical_cast<int>(token.text);
                 auto integer = std::make_shared<Integer>(value);
                 if (!have_lhs) {
                     result->lhs = integer;
                     have_lhs = true;
                 } else 
                     result->rhs = integer;
+            }
                 break;
             case Token::plus: 
                 result->type = BinaryOperation::addition;
@@ -106,12 +107,29 @@ std::shared_ptr<Element> parse(std::vector<Token> const& tokens) {
             case Token::minus: 
                 result->type = BinaryOperation::subtraction;
                 break;
-            case Token::lparen: 
-                break;
             case Token::rparen: 
+                break;
+            case Token::lparen: {
+                int j = i;
+                std::cout << i << "  " << j << "  " << tokens.size() << std::endl;
+                for (; j<tokens.size(); ++j)
+                    if (tokens[j].type == Token::rparen)
+                        break;
+                std::cout << i << "  " << j << "  " << tokens.size() << std::endl;
+                std::vector<Token> subexpression(&tokens[i+1], &tokens[j]);
+                auto element = parse(subexpression);
+                if (!have_lhs) {
+                    result->lhs = element;
+                    have_lhs = true;
+                } else
+                    result->rhs = element;
+                i = j;
+            }
                 break;
         }
     }
+
+    return result;
 }
 
 int main() {
@@ -121,6 +139,14 @@ int main() {
     for (auto& t : tokens)
         std::cout << t << "  ";
     std::cout << "\n";
+
+    try {
+        auto parsed = parse(tokens);
+        std::cout << input << " = " << parsed->eval() << std::endl;
+    } catch (std::exception const& e) {
+        std::cout << " a error occured" << std::endl;
+        std::cout << e.what() << std::endl;
+    }
 
     return 0;
 }
