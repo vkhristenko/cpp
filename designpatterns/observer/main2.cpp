@@ -3,10 +3,13 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <mutex>
 #include <boost/lexical_cast.hpp>
 
 using namespace std;
 using namespace boost;
+
+using mutex_t = std::mutex; 
 
 template<typename T>
 struct Observer {
@@ -16,13 +19,16 @@ struct Observer {
 template<typename T>
 struct Observable{
     std::vector<Observer<T>*> observers;
+    mutex_t mtx;
     void notify(T& source, std::string const& field_name) {
+        std::scoped_lock<mutex_t> lock{mtx};
         for (auto o : observers) {
             o->field_changed(source, field_name);
         }
     }
 
     void subscribe(Observer<T> &o) {
+        std::scoped_lock<mutex_t> lock{mtx};
         observers.push_back(&o);
     }
 
@@ -30,6 +36,7 @@ struct Observable{
         // erase-remove idion
         // std::move -> moves all the matched elements to the end
         // vector::erase -> removes [currnet, end]
+        std::scoped_lock<mutex_t> lock{mtx};
         observers.erase(std::remove(observers.begin(), observers.end(), &o),
             observers.end());
     }
@@ -69,14 +76,31 @@ struct ConsolePersonObserver : public Observer<Person> {
     }
 };
 
+struct TrafficAdministration : Observer<Person> {
+    void field_changed(Person &source, std::string const& field_name) override {
+        if (field_name == "age") {
+            if (source.get_age() < 17)
+                std::cout << "whoa there, you are not old enough to drive!\n";
+            else {
+                std::cout << "oh, ok, we no longer care\n";
+                source.unsubscribe(*this);
+            }
+        }
+    }
+};
+
 int main() {
     Person person{10};
-    ConsolePersonObserver cpo;
+    TrafficAdministration cpo;
     person.subscribe(cpo);
     
     person.set_age(11);
     person.set_age(12);
-    person.set_age(20);
+    try {
+        person.set_age(20);
+    } catch (std::exception const& e) {
+        std::cout << "oops, " << e.what() << std::endl;
+    }
     
     return 0;
 }
