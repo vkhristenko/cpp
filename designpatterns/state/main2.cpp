@@ -91,6 +91,8 @@ int main() {
     info();
     phone.process_event(PhoneThrownIntoWall{});
     info();
+
+    phone.process_event(CallDialed{});
     
     return 0;
 }
