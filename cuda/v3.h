@@ -1,4 +1,4 @@
-class {
+class v3 {
 public:
     float x,y,z;
 
