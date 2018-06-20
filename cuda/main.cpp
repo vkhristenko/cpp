@@ -17,7 +17,7 @@ int main(int argc, char ** argv)
     if(argc > 2) { srand(atoi(argv[2])); } // Random seed
 
     particle * pArray = new particle[n];
-    particle * devPArray = NULL;
+    particle * devPArray = nullptr;
     cudaMalloc(&devPArray, n*sizeof(particle));
     cudaMemcpy(devPArray, pArray, n*sizeof(particle), cudaMemcpyHostToDevice);
     for(int i=0; i<100; i++)
@@ -36,6 +36,7 @@ int main(int argc, char ** argv)
         totalDistance.x += temp.x;
         totalDistance.y += temp.y;
         totalDistance.z += temp.z;
+        printf("%f %f %f\n", temp.x, temp.y, temp.z);
     }
     float avgX = totalDistance.x /(float)n;
     float avgY = totalDistance.y /(float)n;
