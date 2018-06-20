@@ -12,8 +12,6 @@ void v3::randomize() {
     x = (float)rand() / (float)RAND_MAX;
     y = (float)rand() / (float)RAND_MAX;
     z = (float)rand() / (float)RAND_MAX;
-
-    printf("%f %f %f\n", x, y, z);
 }
 
 __host__ __device__ void v3::normalize() {
