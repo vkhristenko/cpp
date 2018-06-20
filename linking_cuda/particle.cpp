@@ -1,5 +1,7 @@
 #include "particle.h"
 
+#include <stdio.h>
+
 particle::particle()
     : position(), velocity(), totalDistance(0., 0., 0.)
 {}
