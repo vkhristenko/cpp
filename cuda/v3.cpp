@@ -1,5 +1,6 @@
 #include "v3.h"
 #include <math.h>
+#include <stdio.h>
 
 v3::v3() { randomize(); }
 
@@ -11,6 +12,8 @@ void v3::randomize() {
     x = (float)rand() / (float)RAND_MAX;
     y = (float)rand() / (float)RAND_MAX;
     z = (float)rand() / (float)RAND_MAX;
+
+    printf("%f %f %f\n", x, y, z);
 }
 
 __host__ __device__ void v3::normalize() {

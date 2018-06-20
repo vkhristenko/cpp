@@ -18,7 +18,7 @@ int main(int argc, char ** argv)
 
     particle * pArray = new particle[n];
     for (auto i=0; i<n; i++)
-        pArray[i].randomize();
+        pArray[i].
 
     particle * devPArray = nullptr;
     cudaMalloc(&devPArray, n*sizeof(particle));
@@ -39,7 +39,7 @@ int main(int argc, char ** argv)
         totalDistance.x += temp.x;
         totalDistance.y += temp.y;
         totalDistance.z += temp.z;
-        printf("%f %f %f\n", temp.x, temp.y, temp.z);
+        printf("%f: %f %f\n", temp.x, temp.y, temp.z);
     }
     float avgX = totalDistance.x /(float)n;
     float avgY = totalDistance.y /(float)n;
