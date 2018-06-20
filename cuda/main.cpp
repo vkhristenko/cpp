@@ -17,9 +17,6 @@ int main(int argc, char ** argv)
     if(argc > 2) { srand(atoi(argv[2])); } // Random seed
 
     particle * pArray = new particle[n];
-    for (auto i=0; i<n; i++)
-        pArray[i].
-
     particle * devPArray = nullptr;
     cudaMalloc(&devPArray, n*sizeof(particle));
     cudaMemcpy(devPArray, pArray, n*sizeof(particle), cudaMemcpyHostToDevice);
