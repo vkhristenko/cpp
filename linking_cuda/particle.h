@@ -1,7 +1,7 @@
 #include "v3.h"
 
 class particle {
-private:
+public:
     v3 position, velocity, totalDistance;
 
 public:
