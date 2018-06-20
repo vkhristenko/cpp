@@ -1,7 +1,8 @@
 objects = main.o particle.o v3.o
 
 all: $(objects)
-	nvcc -arch=sm_35 $(objects) -o app
+	nvcc -arch=sm_35 -dlink ${objects} -o device_stuff.o 
+	g++ device_stuff.o ${objects} –lcudart –o app
 
 %.o: %.cpp
 	nvcc -x cu -arch=sm_35 -I. -dc $< -o $@
