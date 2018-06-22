@@ -1,4 +1,4 @@
- int a = 5;
+ static int a = 5;
 
 class X {
 };
