@@ -12,6 +12,11 @@ public:
     Vector() 
         : elem{nullptr}, sz{0}, capacity{0}
     {}
+    Vector(Vector const& other) {}
+    Vector& operator=(Vector const& other) {return Vector();}
+    Vector(Vector&&) {}
+    Vector& operator(Vector&&) {return Vector();}
+
     Vector(size_type s) 
         : elem(new T[s]), sz{s}, capacity{s}
     {}
