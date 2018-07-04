@@ -34,13 +34,15 @@ void test_missing_initializers() {
 void test_initializer_list() {
     // note: below is the difference direct list initialization and 
     // copy list initialization
-    auto x11 {1,2,3,4}; // since c++17 does not work!
+//    auto x11 {1,2,3,4}; // since c++17 does not work!
     auto x1 = {1,2,3,4};
-    auto x22 {1.0, 2.25, 3.5}; // since c++17 does not work!
+//    auto x22 {1.0, 2.25, 3.5}; // since c++17 does not work!
     auto x2 = {1.0, 2.25, 3.5};
+    auto x3 {1};
 
     std::cout << "type(x1) = " << typeid(x1).name() << std::endl;
     std::cout << "type(x2) = " << typeid(x2).name() << std::endl;
+    std::cout << "type(x3) = " << typeid(x3).name() << std::endl;
     //auto x3 = {1.0, 2}; // no narrow! will not compile
 }
 
