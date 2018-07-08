@@ -1,0 +1,271 @@
+
+*** Dumping AST Record Layout
+         0 | _RuneRange
+         0 |   int __nranges
+         8 |   _RuneEntry * __ranges
+           | [sizeof=16, dsize=16, align=8,
+           |  nvsize=16, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | _RuneLocale
+         0 |   char [8] __magic
+         8 |   char [32] __encoding
+        40 |   __darwin_rune_t (*)(const char *, __darwin_size_t, const char **) __sgetrune
+        48 |   int (*)(__darwin_rune_t, char *, __darwin_size_t, char **) __sputrune
+        56 |   __darwin_rune_t __invalid_rune
+        60 |   __uint32_t [256] __runetype
+      1084 |   __darwin_rune_t [256] __maplower
+      2108 |   __darwin_rune_t [256] __mapupper
+      3136 |   _RuneRange __runetype_ext
+      3136 |     int __nranges
+      3144 |     _RuneEntry * __ranges
+      3152 |   _RuneRange __maplower_ext
+      3152 |     int __nranges
+      3160 |     _RuneEntry * __ranges
+      3168 |   _RuneRange __mapupper_ext
+      3168 |     int __nranges
+      3176 |     _RuneEntry * __ranges
+      3184 |   void * __variable
+      3192 |   int __variable_len
+      3196 |   int __ncharclasses
+      3200 |   _RuneCharClass * __charclasses
+           | [sizeof=3208, dsize=3208, align=8,
+           |  nvsize=3208, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | lldiv_t
+         0 |   long long quot
+         8 |   long long rem
+           | [sizeof=16, dsize=16, align=8,
+           |  nvsize=16, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | class std::locale::_Impl
+         0 |   _Atomic_word _M_refcount
+         8 |   const class std::locale::facet ** _M_facets
+        16 |   size_t _M_facets_size
+        24 |   const class std::locale::facet ** _M_caches
+        32 |   char ** _M_names
+           | [sizeof=40, dsize=40, align=8,
+           |  nvsize=40, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct std::ios_base::_Words
+         0 |   void * _M_pword
+         8 |   long _M_iword
+           | [sizeof=16, dsize=16, align=8,
+           |  nvsize=16, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct std::money_base::pattern
+         0 |   char [4] field
+           | [sizeof=4, dsize=4, align=1,
+           |  nvsize=4, nvalign=1]
+
+*** Dumping AST Record Layout
+         0 | struct std::iterator<struct std::random_access_iterator_tag, _Bool, long, _Bool *, _Bool &> (empty)
+           | [sizeof=1, dsize=1, align=1,
+           |  nvsize=1, nvalign=1]
+
+*** Dumping AST Record Layout
+         0 | struct std::_Bit_iterator_base
+         0 |   struct std::iterator<struct std::random_access_iterator_tag, _Bool, long, _Bool *, _Bool &> (base) (empty)
+         0 |   std::_Bit_type * _M_p
+         8 |   unsigned int _M_offset
+           | [sizeof=16, dsize=12, align=8,
+           |  nvsize=12, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct std::_Bit_iterator
+         0 |   struct std::_Bit_iterator_base (base)
+         0 |     struct std::iterator<struct std::random_access_iterator_tag, _Bool, long, _Bool *, _Bool &> (base) (empty)
+         0 |     std::_Bit_type * _M_p
+         8 |     unsigned int _M_offset
+           | [sizeof=16, dsize=12, align=8,
+           |  nvsize=12, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | _RuneRange
+         0 |   int __nranges
+         8 |   _RuneEntry * __ranges
+           | [sizeof=16, dsize=16, align=8,
+           |  nvsize=16, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | _RuneLocale
+         0 |   char [8] __magic
+         8 |   char [32] __encoding
+        40 |   __darwin_rune_t (*)(const char *, __darwin_size_t, const char **) __sgetrune
+        48 |   int (*)(__darwin_rune_t, char *, __darwin_size_t, char **) __sputrune
+        56 |   __darwin_rune_t __invalid_rune
+        60 |   __uint32_t [256] __runetype
+      1084 |   __darwin_rune_t [256] __maplower
+      2108 |   __darwin_rune_t [256] __mapupper
+      3136 |   _RuneRange __runetype_ext
+      3136 |     int __nranges
+      3144 |     _RuneEntry * __ranges
+      3152 |   _RuneRange __maplower_ext
+      3152 |     int __nranges
+      3160 |     _RuneEntry * __ranges
+      3168 |   _RuneRange __mapupper_ext
+      3168 |     int __nranges
+      3176 |     _RuneEntry * __ranges
+      3184 |   void * __variable
+      3192 |   int __variable_len
+      3196 |   int __ncharclasses
+      3200 |   _RuneCharClass * __charclasses
+           | [sizeof=3208, dsize=3208, align=8,
+           |  nvsize=3208, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | lldiv_t
+         0 |   long long quot
+         8 |   long long rem
+           | [sizeof=16, dsize=16, align=8,
+           |  nvsize=16, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | class std::locale::_Impl
+         0 |   _Atomic_word _M_refcount
+         8 |   const class std::locale::facet ** _M_facets
+        16 |   size_t _M_facets_size
+        24 |   const class std::locale::facet ** _M_caches
+        32 |   char ** _M_names
+           | [sizeof=40, dsize=40, align=8,
+           |  nvsize=40, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct std::ios_base::_Words
+         0 |   void * _M_pword
+         8 |   long _M_iword
+           | [sizeof=16, dsize=16, align=8,
+           |  nvsize=16, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct std::money_base::pattern
+         0 |   char [4] field
+           | [sizeof=4, dsize=4, align=1,
+           |  nvsize=4, nvalign=1]
+
+*** Dumping AST Record Layout
+         0 | struct std::iterator<struct std::random_access_iterator_tag, _Bool, long, _Bool *, _Bool &> (empty)
+           | [sizeof=1, dsize=1, align=1,
+           |  nvsize=1, nvalign=1]
+
+*** Dumping AST Record Layout
+         0 | struct std::_Bit_iterator_base
+         0 |   struct std::iterator<struct std::random_access_iterator_tag, _Bool, long, _Bool *, _Bool &> (base) (empty)
+         0 |   std::_Bit_type * _M_p
+         8 |   unsigned int _M_offset
+           | [sizeof=16, dsize=12, align=8,
+           |  nvsize=12, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct std::_Bit_iterator
+         0 |   struct std::_Bit_iterator_base (base)
+         0 |     struct std::iterator<struct std::random_access_iterator_tag, _Bool, long, _Bool *, _Bool &> (base) (empty)
+         0 |     std::_Bit_type * _M_p
+         8 |     unsigned int _M_offset
+           | [sizeof=16, dsize=12, align=8,
+           |  nvsize=12, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct Readout
+         0 |   char hour
+         4 |   int value
+         8 |   char seq
+           | [sizeof=12, dsize=12, align=4,
+           |  nvsize=12, nvalign=4]
+
+*** Dumping AST Record Layout
+         0 | _RuneRange
+         0 |   int __nranges
+         8 |   _RuneEntry * __ranges
+           | [sizeof=16, dsize=16, align=8,
+           |  nvsize=16, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | _RuneLocale
+         0 |   char [8] __magic
+         8 |   char [32] __encoding
+        40 |   __darwin_rune_t (*)(const char *, __darwin_size_t, const char **) __sgetrune
+        48 |   int (*)(__darwin_rune_t, char *, __darwin_size_t, char **) __sputrune
+        56 |   __darwin_rune_t __invalid_rune
+        60 |   __uint32_t [256] __runetype
+      1084 |   __darwin_rune_t [256] __maplower
+      2108 |   __darwin_rune_t [256] __mapupper
+      3136 |   _RuneRange __runetype_ext
+      3136 |     int __nranges
+      3144 |     _RuneEntry * __ranges
+      3152 |   _RuneRange __maplower_ext
+      3152 |     int __nranges
+      3160 |     _RuneEntry * __ranges
+      3168 |   _RuneRange __mapupper_ext
+      3168 |     int __nranges
+      3176 |     _RuneEntry * __ranges
+      3184 |   void * __variable
+      3192 |   int __variable_len
+      3196 |   int __ncharclasses
+      3200 |   _RuneCharClass * __charclasses
+           | [sizeof=3208, dsize=3208, align=8,
+           |  nvsize=3208, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | lldiv_t
+         0 |   long long quot
+         8 |   long long rem
+           | [sizeof=16, dsize=16, align=8,
+           |  nvsize=16, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | class std::locale::_Impl
+         0 |   _Atomic_word _M_refcount
+         8 |   const class std::locale::facet ** _M_facets
+        16 |   size_t _M_facets_size
+        24 |   const class std::locale::facet ** _M_caches
+        32 |   char ** _M_names
+           | [sizeof=40, dsize=40, align=8,
+           |  nvsize=40, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct std::ios_base::_Words
+         0 |   void * _M_pword
+         8 |   long _M_iword
+           | [sizeof=16, dsize=16, align=8,
+           |  nvsize=16, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct std::money_base::pattern
+         0 |   char [4] field
+           | [sizeof=4, dsize=4, align=1,
+           |  nvsize=4, nvalign=1]
+
+*** Dumping AST Record Layout
+         0 | struct std::iterator<struct std::random_access_iterator_tag, _Bool, long, _Bool *, _Bool &> (empty)
+           | [sizeof=1, dsize=1, align=1,
+           |  nvsize=1, nvalign=1]
+
+*** Dumping AST Record Layout
+         0 | struct std::_Bit_iterator_base
+         0 |   struct std::iterator<struct std::random_access_iterator_tag, _Bool, long, _Bool *, _Bool &> (base) (empty)
+         0 |   std::_Bit_type * _M_p
+         8 |   unsigned int _M_offset
+           | [sizeof=16, dsize=12, align=8,
+           |  nvsize=12, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct std::_Bit_iterator
+         0 |   struct std::_Bit_iterator_base (base)
+         0 |     struct std::iterator<struct std::random_access_iterator_tag, _Bool, long, _Bool *, _Bool &> (base) (empty)
+         0 |     std::_Bit_type * _M_p
+         8 |     unsigned int _M_offset
+           | [sizeof=16, dsize=12, align=8,
+           |  nvsize=12, nvalign=8]
+
+*** Dumping AST Record Layout
+         0 | struct Readout
+         0 |   int value
+         4 |   char seq
+         5 |   char hour
+           | [sizeof=8, dsize=8, align=4,
+           |  nvsize=8, nvalign=4]
