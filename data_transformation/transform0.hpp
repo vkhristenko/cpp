@@ -13,11 +13,12 @@ func(T1<Types1...> const& t1, T2<Types2...> t2) {
     std::cout << sizeof...(Types2) << std::endl;
 }
 
-template<typename... Args>
-struct S {};
-
 template<typename I, typename C, typename O, typename... Args> 
-struct S<I,C,O, Args...> {
+struct S {
+    using input_types = I;
+    using condition_types = C;
+    using output_types = O;
+
     S() { std::cout << "primary" << std::endl; }
 
     O operator()(I, C);
@@ -44,9 +45,6 @@ struct S<I<ITypes...>, C<CTypes...>, O<OTypes...>, Args...> {
     }
 };
 
-template<typename T, typename... Ts>
-struct S<T, Ts...> 
-
 struct transform : public S<std::tuple<std::array<int, 10>, int>, std::tuple<int>, std::tuple<int, int>> {
     transform() { std::cout << "Transform specialized" << std::endl; }
 
@@ -64,30 +62,3 @@ struct transform : public S<std::tuple<std::array<int, 10>, int>, std::tuple<int
         return output_types{sum, id};
     }
 };
-
-
-/*
-template<template<typename...> typename T1, typename... Types1,
-         template<typename...> typename T2, typename... Types2>
-class bar {};
-*/
-
-int main() {
-    foo<char, int, double> f1;
-    foo<int, double> f2;
-    func(f1, f2);
-
-    S<int, int, int> t0;
-    S<std::tuple<int, double>, std::tuple<int, int>, std::tuple<std::string, int>> t1;
-    auto [name, adc] = t1({1,1.1}, {1,1});
-    std::cout << "name = " << name << std::endl;
-    std::cout << "adc = " << adc << std::endl;
-
-    transform t;
-    std::array<int, 10> adcs = {0,1,2,3,4,5,6,7,8,9};
-    auto [sum, id] = t(std::make_tuple(adcs, 10), std::make_tuple(100));
-    std::cout << "sum = " << sum << std::endl
-              << "id = " << id << std::endl;
-    
-    return 0;
-}
