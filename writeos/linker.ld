@@ -28,9 +28,5 @@ SECTIONS
         *(.bss)
     }
 
-    /DISCARD/ :
-    {
-        *(.fini_array*)
-        *(.comment)
-    }
+    /DISCARD/ : { *(.fini_array*) *(.comment) }
 }
