@@ -2,6 +2,8 @@ CCPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-except
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
+all: mykernel.bin
+
 objects = loader.o kernel.o
 
 %.o: %.cpp
@@ -15,3 +17,6 @@ mykernel.bin: linker.ld $(objects)
 
 install: mykernel.bin
 	sudo cp $< /boot/mykernel.bin
+
+clean:
+	rm *.o *.bin
