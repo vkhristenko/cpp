@@ -18,7 +18,7 @@ extern "C" void call_constructors() {
         (*i)();
 }
 
-extern "C" void kernel_main(void *multiboot_sturcture, unsigned int magic_number) 
+extern "C" void kernel_main(void const *multiboot_sturcture, unsigned int magic_number) 
 {
     printf("hello world!\n");
 
