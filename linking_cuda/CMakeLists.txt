@@ -4,10 +4,13 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 project(linking_cuda LANGUAGES CXX CUDA)
 
+include_directories("/data/users/vkhriste")
+
 add_library(particles STATIC
     particle.h particle.cu
     v3.h v3.cu)
 
+target_compile_options(particles PUBLIC --expt-relaxed-constexpr -Xptxas -v)
 target_compile_features(particles PUBLIC cxx_std_14)
 
 set_target_properties(particles PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
