@@ -1,0 +1,31 @@
+#include <iostream>
+
+template<typename Input, typename Output>
+struct Mapping {
+    using input_type = Input;
+    using output_type = Output;
+
+    input_type const& input;
+
+    Mapping(input_type const& input)
+        : input(input)
+    {}
+
+    output_type operator()();
+};
+
+template<
+    template<typename...> typename InputT, typename... InputTs,
+    template<typename...> typename OutputT, typename... OutputTs>
+struct Mapping<InputT<InputTs...>, OutputT<OutputTs...>>{};
+
+struct dummy0 : public Mapping<std::tuple<int, int, int>, std::tuple<double, double, double>> 
+{
+    output_type operator()() {
+        return {0, 1, 2};
+    }
+};
+
+int main() {
+    
+}
