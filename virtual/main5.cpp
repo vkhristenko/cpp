@@ -9,7 +9,7 @@ public:
         : i{i} 
     { std::cout << "construct member " << i << std::endl; }
 
-    ~Member() {
+    virtual ~Member() {
         std::cout << "destructing member " << i << std::endl;
     }
 
@@ -19,7 +19,7 @@ public:
 class Base {
 public:
     Base() { std::cout << "constructing base" << std::endl; }
-    ~Base() { std::cout << "destructing base" << std::endl; }
+    virtual ~Base() { std::cout << "destructing base" << std::endl; }
 };
 
 class Derived : public Base {
@@ -28,7 +28,7 @@ public:
     Derived() 
         : m1{1}, m3{3}, m2{2}, Base(), m4{}
     { std::cout << "constructing Derived" << std::endl; }
-    ~Derived() { std::cout << "destructing derived" << std::endl; }
+    virtual ~Derived() { std::cout << "destructing derived" << std::endl; }
 
     Member m1, m2, m3;
     Member m4[10];
