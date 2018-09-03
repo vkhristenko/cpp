@@ -40,6 +40,16 @@ void error(int severity ...) {
         exit(severity);
 }
 
+void error(int severity, std::initializer_list<std::string> err) {
+    for (auto& s : err)
+        std::cerr << s << ' ';
+    std::cerr << '\n';
+    if (severity)
+        exit(severity);
+}
+
+void error1(std::string s) {}
+
 int main(int argc, char **argv) {
 
     switch (argc) {
@@ -52,7 +62,12 @@ int main(int argc, char **argv) {
     default:
         char buffer[8];
         std::string str = std::to_string(argc);
+        error(1, {argv[0], "with", std::to_string(argc-1), "arguments, but with initializer_list"});
         error(1, argv[0], "with", str.c_str(), "arguments", nullptr);
     }
 
+
+    void (*efct)(std::string) = &error1;
+    efct = &error1;
+    efct("error");
 }
