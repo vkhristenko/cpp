@@ -53,9 +53,18 @@ int cmp3(User const*p, User const*q) {
     return strcmp(p->id, q->id);
 }
 
+void f_1(int) noexcept {}
+void g_1(int) {}
+
 int main() {
     std::cout << "heads in alpha order:\n";
     ssort(heads.data(), 6, sizeof(User), cmp1);
     print_id(heads);
     std::cout << '\n';
+
+    void (*p1)(int) = f_1;
+    void (*p2)(int) noexcept = f_1;
+    // error: cannot initialize a variable of type 'void (*)(int) noexcept' with an lvalue of type 'void (int)':
+    //       different exception specifications
+    void (*p3)(int) noexcept = g_1;
 }
