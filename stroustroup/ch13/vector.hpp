@@ -158,4 +158,13 @@ void destroy(In b, In e)
         b->~T();
 }
 
+template<typename T, typename A>
+void vector<T, A>::push_back(T const& x)
+{
+    if (capacity() == size())
+        reserve(size() ? 2*size() : 8);
+    vb.alloc.construct(&vb.elem[size()], val);
+    ++vb.space;
+}
+
 }
