@@ -65,8 +65,97 @@ vector<T, A>::vector(vector<T, A> &&a)
 
 template<typename T, typename A>
 vector<T, A>& vector<T, A>::operator=(vector<T, A> &&a) {
+    // does clear also deallocates the memory acquired?!
     clear(); // destroy elements currently sitting in the container
-    swap(*this, a); // transfer ownership
+    std::swap(*this, a); // transfer ownership
+}
+
+template<typename T, typename A>
+vector<T, A>& vector<T, A>::operator=(vector<T, A> const& a) {
+    if (capacity() < a.size()) {
+        vector<T, A> tmp {a};
+        std::swap(*this, tmp);
+        return *this;
+    }
+
+    if (this == &a) return *this; // self assignment
+
+    size_type sz = size();
+    size_type asz = a.size();
+    vb.alloc = a.vb.alloc(); // copy the allocator
+    if (asz <= sz) {
+        std::copy(a.begin(), a.begin() + asz, vb.elem);
+        for (T *p = vb.elem + asz; p != vb.space; ++p)
+            p->~T();
+    } else {
+        std::copy(a.begin(), a.begin() + sz, vb.elem);
+        std::uninitialized_copy(a.begin() + sz, a.end(), vb.space);
+    }
+
+    vb.space = vb.elem + asz;
+    return *this;
+}
+
+/*
+ *  impl w/o any optimizations
+ *
+template<typename T, typename A>
+vector<T, A> vector<T, A>::operator=(vector<T, A> const& a) {
+    vector<T, A> tmp {a}; // copy ctor
+    std::swap(*this, tmp); // swap the two values
+    return *this;
+    
+    // cause we swapped the values *this and tmp,
+    // at the end of this func, tmp will be destroyed
+    // and since we tmp contained the old values of *this, 
+    // they will be destroyed and memory is released
+}*/
+
+template<typename T, typename A>
+void vector<T, A>::reserve(size_type newalloc) {
+    if (newalloc <= capacity()) return;
+
+    vector<T, A> v(capacity()); // make a new vector with the required capacity
+    std::copy(elem, elem+size(), v.begin());
+    std::swap(*this, v);
+} // the old elements will be destroyed + memory deallocated
+
+template<typename In, typename Out>
+Out uninitialized_move(In b, In e, Out oo) {
+    for (; b != e; ++b, ++oo) {
+        new (static_cast<void*>(&*oo)) T{std::move(*b)}; // move construct in a provided memory location
+        b->~T(); // values are destroyed, note -> memory is not deallocated
+    }
+
+    return b;
+}
+
+template<typename T, typename A>
+void vector<T, A>::reserve(size_type newalloc) {
+    if (newalloc <= capacity()) return;
+
+    vector_base<T, A> b {vb.alloc, newalloc};
+    uninitialized_move(elem, elem+size(), b.elem);
+    std::swap(vb, b);
+} // implicitly release old space
+
+template<typename T, typename A>
+void vector<T, A>::resize(size_type newsize, T const& val) {
+   this->reserve(newsize);
+
+   if (size() < newsize)
+       std::uninitialized_fill(elem + size(), elem + newsize, val);
+   else 
+       destroy(elem.size(), elem = newsize);
+
+   vb.space = vb.last = vb.elem + newsize;
+}
+
+template<typename In>
+void destroy(In b, In e) 
+{
+    for (; b != e; ++b)
+        b->~T();
 }
 
 }
