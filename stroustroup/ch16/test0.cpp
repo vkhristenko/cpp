@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 class X {
 private:
@@ -29,7 +30,10 @@ int user(X var, X *ptr)
 }
 
 class Date {
+private:
     int d, m, y;
+    mutable std::string cache;
+    mutable bool cache_valid;
 
 public:
     Date()
@@ -42,6 +46,25 @@ public:
         : d{d}, m{m}, y{y}
     {}
 
+    void compute_cache_value() const
+    {
+        // do nothin
+    }
+
+    std::string string_rep() const
+    {
+        if (!cache_valid) {
+            compute_cache_value();
+            cache_valid = true;
+        }
+
+        return cache;
+    }
+
+    Date& add_year(int n) { return *this; }
+    Date& add_month(int m) { return *this; }
+    Date& add_day(int d) { return *this; }
+
     friend std::ostream& operator<<(std::ostream&, Date const&);
 };
 
@@ -49,6 +72,12 @@ std::ostream& operator<<(std::ostream& os, Date const& date)
 {
     return os << date.d << "/" << date.m << "/" << date.y;
 }
+
+struct S {
+    int m;
+    int f() { return 1; }
+    static int sm;
+};
 
 int main() 
 {
@@ -67,4 +96,6 @@ int main()
     std::cout << other << std::endl;
     std::cout << some << std::endl;
     std::cout << check << std::endl;
+
+    int (S::*) pmf() { &S::f };
 }
