@@ -34,11 +34,28 @@ struct S2 {
     X x;
 };
 
+struct work {
+    std::string author;
+    std::string name;
+    double year;
+};
+
+work alpha;
+
+void fff() 
+{
+    work beta;
+}
+
 int main() 
 {
     std::vector<int> x {1,2,4,5,6,7,8,9,10};
     f(x);
 
     S1 s;
-    S2 s1;
+    work beta;
+//    S2 s1;
+    std::cout << "authoer = " << alpha.author << "  name = " << alpha.name << "  year = " << alpha.year
+              << std::endl
+              << "authoer = " << beta.author << "  name = " << beta.name << "  year = " << beta.year << std::endl;
 }
