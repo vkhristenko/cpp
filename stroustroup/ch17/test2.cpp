@@ -35,6 +35,114 @@ void test(std::initializer_list<int> l) {
     }
 }
 
+struct B1 {
+    B1() {}
+};
+
+struct B2 {
+    B2(int) {}
+};
+
+struct D1 : B1, B2 {
+    D1(int l)
+        : B1{}, B2{l}
+    {}
+};
+
+struct D2 : B1, B2 {
+    D2(int l)
+        : B2{l}
+    {}
+};
+
+/*struct D3 : B1, B2 {
+    D3(int i) {}
+};*/
+
+/*
+ * testing the order of construction and destruction of class hierarchies
+ * - base classes
+ * - class members
+ * - base class members
+ */
+struct X {
+    X() {
+        std::cout << "calling X ctor for value = " << value << std::endl;
+    }
+
+    explicit X(int value)
+        : value {value}
+    {
+        std::cout << "calling X ctor from an int for value = " << value << std::endl;
+    }
+
+    ~X() {
+        std::cout << "calling X dtor for value = " << value << std::endl;
+    }
+
+    int value {0};
+};
+
+struct CommonBase {
+    CommonBase()
+        : mem0 {0}
+    {
+        std::cout << "calling CommonBase ctor" << std::endl;
+    }
+
+    ~CommonBase() {
+        std::cout << "calling CommonBase dtor" << std::endl;
+    }
+
+    X mem0 {0};
+};
+
+struct Base1 : virtual CommonBase {
+    Base1() 
+        : mem1 {1}, mem2 {2} 
+    {
+      std::cout << "calling Base1 ctor" << std::endl;
+    }
+
+    ~Base1() 
+    {
+        std::cout << "calling Base1 dtor" << std::endl;
+    }
+
+    X mem1;
+    X mem2;
+};
+
+struct Base2 : virtual CommonBase {
+    Base2() 
+        : mem3 {3}, mem4 {4}
+    {
+        std::cout << "calling Base2 ctor" << std::endl;
+    }
+
+    ~Base2() 
+    {
+        std::cout << "calling Base2 dtor" << std::endl;
+    }
+
+    X mem3;
+    X mem4;
+};
+
+struct Der1 : Base1, Base2 {
+    Der1()
+        : Base1{}, Base2{}, mem5{5}
+    {
+        std::cout << "calling Der1 ctor" << std::endl;
+    }
+
+    ~Der1() {
+        std::cout << "calling Der1 dtor" << std::endl;
+    }
+
+    X mem5 {0};
+};
+
 int main() 
 {
     test({1,2,3,4,5,6});
@@ -43,4 +151,10 @@ int main()
     my_vector v2({});
     my_vector v3{1,2,3,4};
     my_vector v4{std::vector<int>{1,2,3,4}};
+
+
+    std::cout << "\n\n" << "testing the order of construction and initialization" << std::endl;
+    Der1 d;
+
+    std::cout << "\n\n\n" << "calling dtors" << "\n\n\n" << std::endl;
 }
