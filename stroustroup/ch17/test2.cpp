@@ -142,12 +142,18 @@ struct Der1 : Base1, Base2 {
 };
 
 class Node {
+public:
     static int node_count;
     static const int c1 = 7;
     const int c2 = 8;
     static constexpr float c3 = 7.0;
 //    static int c4 = 2; error: non-const static data member must be initialized out of line
 };
+
+// w/o this second definition (second definition as we have provided default definition insdie the class decl)
+// linker will not find a symbol
+int const Node::c1;
+int const* p = &Node::c1;
 
 int Node::node_count = 0;
 
@@ -165,4 +171,6 @@ int main()
     Der1 d;
 
     std::cout << "\n\n\n" << "calling dtors" << "\n\n\n" << std::endl;
+
+    std::cout << "c1 = " << *p << std::endl;
 }
