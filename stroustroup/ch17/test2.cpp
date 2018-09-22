@@ -156,9 +156,11 @@ public:
 
 // w/o this second definition (second definition as we have provided default definition insdie the class decl)
 // linker will not find a symbol
+//int const Node::c1;
+//int const* p = &Node::c1;
+// note the order: Node::c1 comes after we took the address of it!
+int const *p = &Node::c1;
 int const Node::c1;
-int const* p = &Node::c1;
-
 int Node::node_count = 0;
 
 int main() 
@@ -177,6 +179,8 @@ int main()
     std::cout << "\n\n\n" << "calling dtors" << "\n\n\n" << std::endl;
 
     std::cout << "c1 = " << *p << std::endl;
+    auto xxx = Node::c1;
+    std::cout << "xxx = " << xxx << std::endl;
     Node n;
     std::cout << "get_c1 = " << n.get_c1() << std::endl;
     std::cout << "get_c1_static = " << Node::get_c1_static() << std::endl;
