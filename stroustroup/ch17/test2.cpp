@@ -147,6 +147,10 @@ public:
     static const int c1 = 7;
     const int c2 = 8;
     static constexpr float c3 = 7.0;
+    
+    int const get_c1() { return c1; }
+    static int const get_c1_static() { return c1; }
+
 //    static int c4 = 2; error: non-const static data member must be initialized out of line
 };
 
@@ -173,4 +177,7 @@ int main()
     std::cout << "\n\n\n" << "calling dtors" << "\n\n\n" << std::endl;
 
     std::cout << "c1 = " << *p << std::endl;
+    Node n;
+    std::cout << "get_c1 = " << n.get_c1() << std::endl;
+    std::cout << "get_c1_static = " << Node::get_c1_static() << std::endl;
 }
