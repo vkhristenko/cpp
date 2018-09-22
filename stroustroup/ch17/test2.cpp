@@ -84,9 +84,7 @@ struct X {
 };
 
 struct CommonBase {
-    CommonBase()
-        : mem0 {0}
-    {
+    CommonBase() {
         std::cout << "calling CommonBase ctor" << std::endl;
     }
 
@@ -94,7 +92,7 @@ struct CommonBase {
         std::cout << "calling CommonBase dtor" << std::endl;
     }
 
-    X mem0 {0};
+    X mem0 {-1};
 };
 
 struct Base1 : virtual CommonBase {
@@ -142,6 +140,16 @@ struct Der1 : Base1, Base2 {
 
     X mem5 {0};
 };
+
+class Node {
+    static int node_count;
+    static const int c1 = 7;
+    const int c2 = 8;
+    static constexpr float c3 = 7.0;
+//    static int c4 = 2; error: non-const static data member must be initialized out of line
+};
+
+int Node::node_count = 0;
 
 int main() 
 {
