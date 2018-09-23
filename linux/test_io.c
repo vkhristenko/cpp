@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 
 void test_write(int fd) {
     char buf[100];
@@ -52,6 +54,9 @@ int main() {
     test_mmap(fd);
 
     close(fd);
+
+    int val = shmget(0, 100, IPC_CREAT);
+    printf("val = %d\n", val);
 
     return 0;
 }
