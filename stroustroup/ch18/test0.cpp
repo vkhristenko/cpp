@@ -38,8 +38,8 @@ public:
         return *this;
     }
 
-    double real() const { return re; }
-    double imag() const { return im; }
+    constexpr double real() const { return re; }
+    constexpr double imag() const { return im; }
 };
 
 complex operator+(complex a, complex b) {
