@@ -70,6 +70,20 @@ void print_employee(employee const *e) {
     }
 }
 
+struct node {
+    virtual int type() = 0;
+};
+
+struct if_stmt : public node {
+    int type() override final {
+        return 0;
+    }
+};
+
+struct for_stmt final : public node {
+    int type() override { return 0; }
+};
+
 int main() {
     employee e = {std::string("viktor"), std::string("khristenko"), 'd',
                 0, 0};
