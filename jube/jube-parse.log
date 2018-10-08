@@ -1,0 +1,34 @@
+[2018-10-08 16:23:20,647]:DEBUG: Parsing hello_world.jube.xml
+[2018-10-08 16:23:20,889]:DEBUG:   --> Preprocess run 1 <--
+[2018-10-08 16:23:20,890]:DEBUG:   Remove invalid tags
+[2018-10-08 16:23:20,890]:DEBUG:     Available tags: 
+[2018-10-08 16:23:20,890]:DEBUG:   Remove invalid tags
+[2018-10-08 16:23:20,890]:DEBUG:     Available tags: 
+[2018-10-08 16:23:20,892]:DEBUG:   Read $JUBE_INCLUDE_PATH
+[2018-10-08 16:23:20,892]:DEBUG:   Preprocess xml tree
+[2018-10-08 16:23:20,892]:DEBUG:     path: .
+[2018-10-08 16:23:20,893]:DEBUG:   Remove invalid tags
+[2018-10-08 16:23:20,893]:DEBUG:     Available tags: 
+[2018-10-08 16:23:20,894]:DEBUG:   Preprocess done
+[2018-10-08 16:23:20,894]:DEBUG:   Preprocess benchmark xml tree
+[2018-10-08 16:23:20,895]:DEBUG:   Parsing <parameterset name="hello_parameter">
+[2018-10-08 16:23:20,896]:DEBUG:   Parsing <step name="say_hello">
+[2018-10-08 16:23:20,897]:DEBUG: Start consistency check
+[2018-10-08 16:23:20,898]:DEBUG: Create benchmark directory
+[2018-10-08 16:23:40,279]:DEBUG: Parsing hello_world.jube.xml
+[2018-10-08 16:23:40,309]:DEBUG:   --> Preprocess run 1 <--
+[2018-10-08 16:23:40,310]:DEBUG:   Remove invalid tags
+[2018-10-08 16:23:40,310]:DEBUG:     Available tags: 
+[2018-10-08 16:23:40,310]:DEBUG:   Remove invalid tags
+[2018-10-08 16:23:40,311]:DEBUG:     Available tags: 
+[2018-10-08 16:23:40,312]:DEBUG:   Read $JUBE_INCLUDE_PATH
+[2018-10-08 16:23:40,312]:DEBUG:   Preprocess xml tree
+[2018-10-08 16:23:40,312]:DEBUG:     path: .
+[2018-10-08 16:23:40,313]:DEBUG:   Remove invalid tags
+[2018-10-08 16:23:40,313]:DEBUG:     Available tags: 
+[2018-10-08 16:23:40,313]:DEBUG:   Preprocess done
+[2018-10-08 16:23:40,314]:DEBUG:   Preprocess benchmark xml tree
+[2018-10-08 16:23:40,315]:DEBUG:   Parsing <parameterset name="hello_parameter">
+[2018-10-08 16:23:40,316]:DEBUG:   Parsing <step name="say_hello">
+[2018-10-08 16:23:40,317]:DEBUG: Start consistency check
+[2018-10-08 16:23:40,317]:DEBUG: Create benchmark directory

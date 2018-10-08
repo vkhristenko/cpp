@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workpackages>
+  <workpackage id="0">
+    <step cycle="0" iteration="0">say_hello</step>
+    <parameterset>
+      <parameter mode="text" name="hello_str" separator="," type="string">
+        <value>Hello World</value>
+      </parameter>
+    </parameterset>
+    <iteration_siblings>0</iteration_siblings>
+    <environment>
+      <env name="SHLVL">'3'</env>
+    </environment>
+  </workpackage>
+</workpackages>

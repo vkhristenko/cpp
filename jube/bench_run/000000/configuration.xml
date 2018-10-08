@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jube version="2.2.0">
+  <benchmark file_path_ref="../.." name="hello_world" outpath="..">
+    <comment>a simple hello world benchmark</comment>
+    <parameterset name="hello_parameter">
+      <parameter mode="text" name="hello_str" separator="," type="string">Hello World</parameter>
+    </parameterset>
+    <step name="say_hello">
+      <use>hello_parameter</use>
+      <do>echo $hello_str</do>
+    </step>
+  </benchmark>
+</jube>
