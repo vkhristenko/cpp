@@ -41,6 +41,24 @@ void test(std_interface &interface) {
     (interface.*s)();
 }
 
+class text : public std_interface {
+public:
+    void start() override {}
+    void suspend() override {}
+    virtual void print() {}
+
+private:
+    std::vector<int> s;
+};
+
 int main() {
+    // contravariance
+    using p_std_int = void (std_interface::*)();
+    // cannot initialize a variable of type
+    //       'void (std_interface::*)()' with an rvalue of type 'void (text::*)()': different classes
+    //             ('std_interface' vs 'text')
+//    void (std_interface::*p1)() = &text::print;
+
+    void (text::*p2)() = &std_interface::start;
     return 0;
 }
