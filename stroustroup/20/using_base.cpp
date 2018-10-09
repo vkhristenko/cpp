@@ -32,6 +32,22 @@ public:
     }
 };
 
+struct b1 {
+    b1(int) {}
+};
+
+struct d1 : b1 {
+    using b1::b1;
+
+    std::string s;
+    int x {10};
+};
+
+void test() {
+    d1 d {6};
+    d1 e;
+}
+
 int main() {
     derived d;
     use(d);
