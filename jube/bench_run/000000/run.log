@@ -1,0 +1,52 @@
+[2018-10-08 16:23:21,314]:DEBUG: Create initial workpackages
+[2018-10-08 16:23:21,380]:DEBUG: Store initial workpackage information
+[2018-10-08 16:23:21,425]:DEBUG: Start benchmark run
+[2018-10-08 16:23:21,425]:INFO: ######################################################################
+[2018-10-08 16:23:21,426]:INFO: # benchmark: hello_world
+[2018-10-08 16:23:21,426]:INFO: #
+[2018-10-08 16:23:21,426]:INFO: # a simple hello world benchmark
+[2018-10-08 16:23:21,426]:INFO: ######################################################################
+[2018-10-08 16:23:21,448]:DEBUG: ----- say_hello ( iter:0 | id:0 | parents: | cycle:0 ) -----
+[2018-10-08 16:23:21,496]:DEBUG:   available parameter:
+[2018-10-08 16:23:21,496]:DEBUG:          parameter             | value                                   
+[2018-10-08 16:23:21,497]:DEBUG:          ----------------------+-----------------------------------------
+[2018-10-08 16:23:21,497]:DEBUG:          hello_str             | Hello World                             
+[2018-10-08 16:23:21,497]:DEBUG:          jube_benchmark_home   | /direct/homeb/zam/vkhriste/soft/test-   
+[2018-10-08 16:23:21,497]:DEBUG:                                | cpp/jube                                
+[2018-10-08 16:23:21,497]:DEBUG:          jube_benchmark_id     | 0                                       
+[2018-10-08 16:23:21,498]:DEBUG:          jube_benchmark_name   | hello_world                             
+[2018-10-08 16:23:21,498]:DEBUG:          jube_benchmark_padid  | 000000                                  
+[2018-10-08 16:23:21,498]:DEBUG:          jube_benchmark_rundir | /direct/homeb/zam/vkhriste/soft/test-   
+[2018-10-08 16:23:21,498]:DEBUG:                                | cpp/jube/bench_run/000000               
+[2018-10-08 16:23:21,498]:DEBUG:          jube_benchmark_start  | 2018-10-08T16:23:21                     
+[2018-10-08 16:23:21,498]:DEBUG:          jube_step_cycles      | 1                                       
+[2018-10-08 16:23:21,499]:DEBUG:          jube_step_iterations  | 1                                       
+[2018-10-08 16:23:21,499]:DEBUG:          jube_step_name        | say_hello                               
+[2018-10-08 16:23:21,499]:DEBUG:          jube_wp_abspath       | /direct/homeb/zam/vkhriste/soft/test-cpp
+[2018-10-08 16:23:21,499]:DEBUG:                                | /jube/bench_run/000000/000000_say_hello/
+[2018-10-08 16:23:21,499]:DEBUG:                                | work                                    
+[2018-10-08 16:23:21,500]:DEBUG:          jube_wp_cycle         | 0                                       
+[2018-10-08 16:23:21,500]:DEBUG:          jube_wp_envlist       |                                         
+[2018-10-08 16:23:21,500]:DEBUG:          jube_wp_envstr        |                                         
+[2018-10-08 16:23:21,500]:DEBUG:          jube_wp_id            | 0                                       
+[2018-10-08 16:23:21,500]:DEBUG:          jube_wp_iteration     | 0                                       
+[2018-10-08 16:23:21,500]:DEBUG:          jube_wp_padid         | 000000                                  
+[2018-10-08 16:23:21,501]:DEBUG:          jube_wp_relpath       | bench_run/000000/000000_say_hello/work  
+[2018-10-08 16:23:21,572]:DEBUG: >>> echo Hello World
+[2018-10-08 16:23:21,573]:DEBUG:     stdout: /direct/homeb/zam/vkhriste/soft/test-cpp/jube/bench_run/000000/000000_say_hello/work/stdout
+[2018-10-08 16:23:21,573]:DEBUG:     stderr: /direct/homeb/zam/vkhriste/soft/test-cpp/jube/bench_run/000000/000000_say_hello/work/stderr
+[2018-10-08 16:23:22,047]:DEBUG: Create new workpackages for workpackage say_hello(0)
+[2018-10-08 16:23:22,048]:DEBUG:   0 new workpackages created
+[2018-10-08 16:23:22,080]:INFO:    stepname | all | open | wait | error | done
+[2018-10-08 16:23:22,080]:INFO:   ----------+-----+------+------+-------+-----
+[2018-10-08 16:23:22,080]:INFO:   say_hello |   1 |    0 |    0 |     0 |    1
+[2018-10-08 16:23:22,081]:INFO: 
+[2018-10-08 16:23:22,081]:INFO: >>>> Benchmark information and further useful commands:
+[2018-10-08 16:23:22,081]:INFO: >>>>       id: 0
+[2018-10-08 16:23:22,081]:INFO: >>>>   handle: bench_run
+[2018-10-08 16:23:22,082]:INFO: >>>>      dir: bench_run/000000
+[2018-10-08 16:23:22,082]:INFO: >>>>  analyse: jube analyse bench_run --id 0
+[2018-10-08 16:23:22,082]:INFO: >>>>   result: jube result bench_run --id 0
+[2018-10-08 16:23:22,083]:INFO: >>>>     info: jube info bench_run --id 0
+[2018-10-08 16:23:22,083]:INFO: >>>>      log: jube log bench_run --id 0
+[2018-10-08 16:23:22,083]:INFO: ######################################################################
