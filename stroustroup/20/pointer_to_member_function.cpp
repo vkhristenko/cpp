@@ -25,15 +25,17 @@ public:
     ~some_interface() {}
 };
 
-using p_std_int = void (std_interface::*)();
-
 void test(std_interface *interface) {
+    using p_std_int = void (std_interface::*)();
+
     p_std_int s = &std_interface::suspend;
     interface->suspend();
     (interface->*s)();
 }
 
 void test(std_interface &interface) {
+    using p_std_int = void (std_interface::*)();
+
     p_std_int s = &std_interface::suspend;
     interface.suspend();
     (interface.*s)();
