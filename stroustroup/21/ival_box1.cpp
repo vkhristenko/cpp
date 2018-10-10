@@ -19,6 +19,17 @@ public:
     virtual ~ival_box() {} 
 };
 
+class ival_slider : public ival_box {
+private:
+    // graphics stuff 
+
+public:
+    ival_slider(int, int);
+
+    int get_value() override;
+    void prompt() override;
+};
+
 void interact(ival_box *pb) {
     pb->prompt(); // alert user
 
@@ -36,4 +47,8 @@ void some_fct() {
 
     std::unique_ptr<ival_box> p2 { new ival_dial{1, 12} };
     interact(p2.get());
+}
+
+int main() {
+    return 0;
 }
