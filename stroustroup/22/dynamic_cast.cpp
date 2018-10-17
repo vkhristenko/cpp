@@ -1,9 +1,14 @@
 #include <iostream>
 
-class ival_slider {};
+class ival_slider {
+public:
+    virtual ~ival_slider() {}
+};
 class bbslider {};
+class bbdial {};
 
 class bb_ival_slider : public ival_slider, protected bbslider {};
+class bb_ival_dial : public ival_slider, protected bbdial {};
 
 void test(bb_ival_slider *p) {
     ival_slider *p1 = p;
@@ -60,6 +65,14 @@ void test3(ival_box *pb, Date *pd) {
 //    void *pd2 = dynamic_cast<void*>(pd); // error DAte is not polymorphic
 }
 
+void test4(ival_slider &slider) {
+    try {
+        bb_ival_slider &s = dynamic_cast<bb_ival_slider&>(slider);
+    } catch (std::bad_cast exc) {
+        std::cout << "error message = " << exc.what() << std::endl;
+    }
+}
+
 int main() {
     auto *ptr = new bb_ival_slider{};
     test(ptr);
@@ -67,6 +80,10 @@ int main() {
     auto *ptr1 = new derived_from_virtual{};
     auto *ptr2 = new derived_from_normal{};
     test1(ptr1, ptr2);
+
+    test4(*ptr);
+    auto *ptr3 = new bb_ival_dial{};
+    test4(*ptr3);
 
     return 0;
 }
