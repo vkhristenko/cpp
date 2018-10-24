@@ -39,5 +39,44 @@ void test2(std::vector<int> &vints, std::vector<std::string> &vstrings) {
     mysort<std::string, std::greater<std::string>>(vstrings);
 }
 
+template<typename T, int max>
+struct buffer {
+    T buf[max];
+};
+
+template<typename T, int max>
+T &lookup(buffer<T, max> &b, char const* p) { return T{}; }
+
+namespace my {
+
+template<typename T1, typename T2>
+std::pair<T1, T2> make_pair(T1 a, T2 b) {
+    return {a,b};
+}
+
+}
+
+template<typename T>
+T *create() {
+    return new T{};
+}
+
+template<typename T, typename U>
+void test4(T const*, U(*)(U)) {}
+
+int g(int) { return 5; }
+
+void h(char const* p) {
+    test4(p, g);
+    test4(p, g);
+}
+
 int main() {
+    auto x = my::make_pair(1,2);
+    auto y = my::make_pair("xyz", 123);
+
+    auto p = create<int>();
+    auto q = create<float>();
+
+    return 0;
 }
