@@ -81,6 +81,27 @@ iter mean(iter first, iter last) {
     return last;
 }
 
+namespace {
+
+template<typename T>
+class B {};
+
+template<typename T>
+class D : public B<T> {};
+
+template<typename T> 
+void test5(B<T> *) {}
+
+void test6() {
+    B<int> *p = new B<int>{};
+    D<int> *d = new D<int>{};
+    test5(p);
+    test5(d);
+    test5(static_cast<B<int>*>(d));
+}
+
+}
+
 int main() {
     test1();
     test2();
