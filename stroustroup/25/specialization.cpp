@@ -54,11 +54,17 @@ public:
 };
 
 int main() {
+    std::cout << "*******" << std::endl;
     Vector<int> vi;
+    std::cout << "*******" << std::endl;
     Vector<shape*> vps;
+    std::cout << "*******" << std::endl;
     Vector<std::string> vs;
+    std::cout << "*******" << std::endl;
     Vector<char *> vpc;
+    std::cout << "*******" << std::endl;
     Vector<node*> vpn;
+    std::cout << "*******" << std::endl;
 
     Vector<void*> vpvoid;
     vpvoid[0];
