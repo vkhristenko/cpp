@@ -2,15 +2,15 @@
 #include <iostream>
 
 template<typename T>
-typename std::enable_if<std::is_integral<T>::value, T>::type func(T const& x) {
+typename std::enable_if<std::is_integral<T>::value, void>::type func(T const& x) {
     std::cout << "called for integral types" << std::endl;
-    return x;
+//    return x;
 }
 
 template<typename T>
-typename std::enable_if<!std::is_integral<T>::value, T>::type func(T const& x) {
+typename std::enable_if<!std::is_integral<T>::value, void>::type func(T const& x) {
     std::cout << "called for non-integral types" << std::endl;
-    return x;
+//    return x;
 }
 
 class X {
