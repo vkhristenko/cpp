@@ -29,12 +29,32 @@ void printf(char const *s, T value, Args... args) {
 template<typename... Types>
 void f(Types&&... args) {}
 
+template<typename... Types>
+class tuple {
+public:
+    template<typename T, typename U, typename = Enable_if<sizeof...(Types)==2>>
+    tuple(std::pair<T, U> const&);
+};
+
 }
+
+struct XX {};
+struct YY {};
+struct ZZ {};
+
+template<typename... Bases>
+class X : public Bases... {
+public:
+    X() = default;
+    X(Bases const&... b) : Bases{b}... {}
+};
 
 int main() {
     test::printf("%d", 15);
 
     test::f(5, 1.2, std::string{"gregier"});
+
+    X<XX, YY, ZZ> x;
 
     return 0;
 }
