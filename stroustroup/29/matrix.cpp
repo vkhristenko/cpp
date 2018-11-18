@@ -39,10 +39,70 @@ public:
     T* data() { return elems.data(); }
     T const* data() const { return elems.data(); }
 
+    template<typename... Args>
+    Enable_if<matrix_impl::requesting_element<Args...>(), T&>
+    operator()(Args... args);
+
+    template<typename... Args>
+    Enable_if<matrix_impl::requesting_element<Args...>(), T const&>
+    operator()(Args... args) const;
+
+    template<typename... Args>
+    Enable_if<matrix_impl::requesting_slice<Args...>(), matrix_ref<T, N>>
+    operator()(Args const&... args);
+
+    template<typename... Args>
+    Enable_if<matrix_impl::requesting_slice<Args...>(), matrix_ref<T const, N>>
+    operator()(Args const&... args) const;
+
+    matrix_ref<T, N-1> operator[](std::size_t i) { return row(i); }
+    matrix_ref<T const, N-1> operator[](std::size_t i) const { return row(i); }
+
+    matrix_ref<T, N-1> row(std::size_t n);
+    matrix_ref<T const, N-1> row(std::size_t n) const;
+
+    matrix_ref<T, N-1> col(std::size_t n);
+    matrix_ref<T const, N-1> col(std::size_t n) const;
+
 private:
     matrix_slice<N> desc;
     std::vector<T> elems;
 };
+
+template<typename T, std::size_t N>
+template<typename... Exts>
+matrix<T, N>::matrix(Exts... exts) 
+    : desc{exts},
+      elems(desc.size())
+{}
+
+template<typename T, std::size_t N>
+matrix<T, N>::matrix(matrix_initializer<T, N> init) {
+    matrix_impl::derive_extents(init, desc.extents);
+    elems.reserve(desc.size);
+    matrix_impl::insert_flat(init, elems);
+
+    // 
+    assert(elems.size() == desc.size());
+}
+
+template<typename T, std::size_t N>
+template<typename U>
+matrix<T, N>::matrix(matrix_ref<U, N> const& x) 
+    : desc{x.desc}, elems{x.begin(), x.end()}
+{
+    static_assert(Convertible<U, T>(), "matrix constructor: incompatible element types");
+}
+
+template<typename T, std::size_t N>
+template<typename U>
+matrix<T, N>& matrix<T, N>::operator=(matrix_ref<U, N> const& x) {
+    static_assert(Convertible<T, U>(), "matrix =: incompatible element types");
+
+    desc = x.desc;
+    elems.assign(x.begin(), x.end());
+    return *this;
+}
 
 int main() {
     return 0;
