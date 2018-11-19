@@ -123,6 +123,24 @@ struct matrix_slice {
     std::array<std::size_t, N> strides;
 };
 
+template<typename T, std::size_t N>
+class matrix_ref : public matrix_base<T, N> {
+public:
+    matrix_ref(matrix_slice<N> const& s, T *p) : desc{s}, ptr{p} {}
+
+private:
+    matrix_slice<N> desc;
+    T* ptr;
+};
+
+template<typename T, std::size_t N>
+class matrix : public matrix_base<T, N> {
+
+private:
+    matrix_slice<N> desc;
+    std::vector<T> elements;
+};
+
 template<std::size_t N>
 template<typename... Dims>
 std::size_t matrix_slice<N>::operator()(Dims... dims) const {
