@@ -90,6 +90,49 @@ private:
     std::vector<T> elems;
 };
 
+struct slice {
+    slice() : start{-1}, length{-1}, stride{1} {}
+    explicit slice(std::size_t s) : start{s}, length{-1}, stride{1} {}
+    slice(std::size_t s, std::size_t l, std::size_t n=1)
+        : start{s} length{l}, stride{n}
+    {}
+
+    std::size_t operator()(std::size_t i) const { return start + i*stride; }
+    static slice all;
+
+    std::size_t start, length, stride;
+};
+
+template<std::size_t N>
+struct matrix_slice {
+    matrix_slice() = default;
+
+    matrix_slice(std::size_t s, std::initializer_list<std::size_t> exts);
+    matrix_slice(std::size_t s, std::initializer_list<std::size_t> exts,
+                 std::initializer_List<std::size_t> strs);
+
+    template<typename... Dims>
+    matirx_slice(Dims... dims);
+
+    template<typename... Dims,
+             typename = typename std::enable_if<All(Convertible<Dims, std::size_t>()...)>>
+    std::size_t operator()(Dims... dims) const;
+
+    std::size_t size, start;
+    std::array<std::size_t, N> extents;
+    std::array<std::size_t, N> strides;
+};
+
+template<std::size_t N>
+template<typename... Dims>
+std::size_t matrix_slice<N>::operator()(Dims... dims) const {
+    static_assert(sizeof...(Dims) == N, "");
+
+    std::size_t args[N] { std::size_t(dims)... };
+
+    return inner_product(args, args+N, strides.begin(), std::size_t{0});
+}
+
 tempplate<typename T, std::size_t N>
 template<typename M, typename F>
 Enable_if<matrix_type<M>(), matrix<T, N>&> matrix<T, N>::apply(M& m, F f) {
