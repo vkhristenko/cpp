@@ -39,6 +39,7 @@ public:
     T* data() { return elems.data(); }
     T const* data() const { return elems.data(); }
 
+    // subscripting
     template<typename... Args>
     Enable_if<matrix_impl::requesting_element<Args...>(), T&>
     operator()(Args... args);
@@ -64,10 +65,86 @@ public:
     matrix_ref<T, N-1> col(std::size_t n);
     matrix_ref<T const, N-1> col(std::size_t n) const;
 
+    // scalar arithmetic operations
+    template<typename F>
+    matrix& apply(F f);
+    template<typename M, typename F>
+    matrix& apply(M const&, F f);
+    matrix& operator=(T const& value);
+    matrix& operator+=(T const& value) {
+        return apply([&](T& a){ a+=val; });
+    }
+    matrix& operator-=(T const& value);
+    matrix& operator*=(T const& value);
+    matrix& operator/=(T const& value);
+    matrix& operator%=(T const& value);
+
+    // matrix arithmetic operations
+    template<typename M>
+    matrix& operator+=(M const& x);
+    template<typename M>
+    matrix& operator-=(M const& x);
+
 private:
     matrix_slice<N> desc;
     std::vector<T> elems;
 };
+
+tempplate<typename T, std::size_t N>
+template<typename M, typename F>
+Enable_if<matrix_type<M>(), matrix<T, N>&> matrix<T, N>::apply(M& m, F f) {
+    assert(same_extents(desc, m.descriptor()));
+    for (auto i=begin(), j=m.begin(); i!=end(); ++i, ++j) {
+        f(*j, *j);
+    }
+   
+    return *this;
+}
+
+template<typename T, std::size_t N>
+matrix<T, N> operator+(matrix<T, N> const& a, matrix<T, N> const& b) {
+    matrix<T, N> res = a;
+    res += b;
+    return res;
+}
+
+template<typename T, typename T2, std::size_t N, 
+         typename RT = matrix<Common_type<Value_type<T>, Value_type<T2>>, N>>
+matrix<Rt, N> operator+(matrix<T, N> const& a, matrix<T2, N> const& b) {
+    matrix<RT, N> res = a;
+    res += b;
+    return res;
+}
+
+template<typename T, std::size_t N>
+matrix<T, N> operator+(matrix_ref<T, N> const& x, T const& n) {
+    matrix<T, N> res = x;
+    res += n;
+    return res;
+}
+
+template<typename T, std::size_t N>
+template<typename M>
+Enable_if<matrix_type<M>(), matrix<T, N>&> matrix<T, N>::operator+=(M const& m) {
+    static_assert(m.order() == N, "+=: mismatched matrix dimensions");
+    assert(same_extents(desc, m.descriptor()));
+
+    return apply(m, [](T& a, Value_type<M>& b) { a+=b; });
+}
+
+template<typename T, std::size_t N>
+matrix<T, N> operator+(matrix<T, N> const& m, T const& val) {
+    matrix<T, N> res = m;
+    res += val;
+    return res;
+}
+
+template<typename T, std::size_t N>
+template<typename F>
+matrix<T, N>& matrix<T, N>::apply(F f) {
+    for (auto& x : elems) f(x);
+    return *this;
+}
 
 template<typename T, std::size_t N>
 template<typename... Exts>
