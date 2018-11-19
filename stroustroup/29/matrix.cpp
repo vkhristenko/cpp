@@ -242,6 +242,77 @@ matrix<T, N>& matrix<T, N>::operator=(matrix_ref<U, N> const& x) {
     return *this;
 }
 
+template<typename T, std::size_t N>
+using matrix_initializer = typename matrix_impl::matrix_init<T, N>::type;
+
+template<typename T, std::size_t N>
+struct matrix_init {
+    using type = std::initializer_list<typename matrix_init<T, N-1>::type>;
+};
+
+template<typename T>
+struct matrix_init<T, 1> {
+    using type = std::initializer_list<T>;
+};
+
+template<typename T>
+struct matrix_init<T, 0>; 
+
+template<std::size_t N, typename List>
+std::array<std::size_t, N> derive_extents(List const& list) {
+    std::array<std::size_t, N> a;
+    auto f = a.begin();
+    add_extents<N>(f, list);
+    return a;
+}
+
+template<typename T, std::size_t N>
+matrix<T, N>::matrix(matrix_initializer<T, N> init) {
+    matrix_impl::derive_extents(init, desc, extents);
+    elems.reserve(desc.size);
+    matrix_impl::insert_flat(init, elems);
+    assert(elems.size() == desc.size());
+}
+
+template<std::size_t N, typename I, typename List>
+Enable_if<(N>1), void> add_extents(I& first, List const& lis) {
+    assert(check_non_jagged(lis));
+    *first = lis.size();
+    add_extents<N-1>(++first, *lis.begin());
+}
+
+template<std::size_t N, typename I, typename List>
+Enable_if<(N==1), void> add_extents(I& first, List const& lis) {
+    *first++ = lis.size();
+}
+
+template<typename List>
+bool check_non_jagged(List const& lis) {
+    auto i = lis.begin();
+    for (auto j=i+1; j!=lis.end(); ++j) 
+        if (i->size() != j->size())
+            return false;
+
+    return true;
+}
+
+template<typename T, typename Vec>
+void insert_flat(std::initializer_list<T> lst, Vec& vec) {
+    add_list(lst.begin(), lst.end(), vec);
+}
+
+template<typename T, typename Vec>
+void add_list(std::initializer_list<T> const* first, 
+              std::initializer_list<T> const* last, Vec& vec) {
+    for (; first!= last; ++first)
+        add_list(first->begin(), first->end(), vec);
+}
+
+template<typename T, typename Vec>
+void add_list(T const* first, T const* last, Vec& vec) {
+    vec.insert(vec.end(), first, last);
+}
+
 int main() {
     return 0;
 }
