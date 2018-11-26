@@ -22,12 +22,35 @@ public:
         q.push_back(val);
         cond.notify_one();
     }
+    
+    void put(T const& val, std::steady_clock::duration d, int n) {
+        std::unique_lock<std::mutex> lck{mtx};
+        bool not_full = cond.wait_for(lck, d, [this]{ return q.size() < n; });
+        if (not_full) {
+            q.push_back(val);
+            cond.notify_one();
+        } else {
+            cond.notify_all();
+            throw std::system_error{"sync_queue: put() timeout"};
+        }
+    }
+
 //    void put(T&& val);
     void get(T& val) {
         std::unique_lock<std::mutex> lck{mtx};
         cond.wait(lck, [this]{ return !q.empty(); });
         val = q.front();
         q.pop_front();
+    }
+
+    void get(T& val, std::steady_clock::duration d) {
+        std::unique_lock<std::mutex> lck{mtx};
+        bool not_empty = cond.wait_for(lck, d, [this]{ return !q.empty(); });
+        if (not_empty) {
+            val = q.front();
+            q.pop_front();
+        } else 
+            throw std::system_error{"sync_queue: get() timeout"};
     }
 
 private:
