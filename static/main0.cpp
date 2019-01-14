@@ -1,5 +1,7 @@
-int values[2] = {1, 2};
+#include <iostream>
+
+extern const int values[2];
 
 int main() {
-    return 0;
+    std::cout << "value[0] = " << values[0] << std::endl;
 }
