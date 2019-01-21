@@ -26,7 +26,20 @@ void test_array() {
 }
 
 void test_deque() {
+    std::deque<int> values(100);
+    using deque_type = std::deque<int>;
+    for (unsigned int i=0; i<100; i++)
+        values[i] = i;
 
+    auto const& begin = values.begin();
+    auto const& end = values.end();
+    auto size = values.size();
+    auto max_size = values.max_size();
+
+    auto elem = values.back();
+    values.pop_back();
+    auto another_elem = values.front();
+    values.pop_front();
 }
 
 int main() {
