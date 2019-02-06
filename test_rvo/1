@@ -1,0 +1,26 @@
+#include <iostream>
+#include <vector>
+#include <utility>
+
+void test0();
+
+int main() {
+    test0();
+
+    return 0;
+}
+
+struct tracker {
+    tracker() { std::cout << "calling tracker()\n"; }
+};
+
+std::tuple<std::vector<int>, std::vector<float>, int> func() {
+    std::vector<int> ints(10, 0);
+    std::vector<float> floats(20, 1.2f);
+    
+    return {ints, floats, 5};
+}
+
+void test0() {
+    auto v = func();
+}
