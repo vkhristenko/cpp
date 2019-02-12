@@ -47,12 +47,22 @@ struct is_power_2 {
     static constexpr bool value = (N & (N-1)) == 0;
 };
 
+/*
 template<size_t N>
 struct pow {
     double operator()(double x) const {
-//        return x * pow<N-1>{}(x);
-        return (N%2) 
-            ? x*pow<N/2>
+        return x * pow<N-1>{}(x);
+    }
+};
+*/
+
+template<size_t N>
+struct pow {
+    double operator()(double x) const {
+        return (N%2)
+            ? x*pow<N/2>()(x)*pow<N/2>()(x)
+            : (N ? pow<N/2>()(x)*pow<N/2>()(x)
+                 : 1);
     }
 };
 
