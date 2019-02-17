@@ -6,6 +6,26 @@ struct Int2Type {
 };
 
 template<typename T, bool isPolymorphic>
+struct NiftyContainerValueTraits {
+    using ValueType = T*;
+};
+
+template<typename T>
+struct NiftyContainerValueTraits<T, false> {
+    using ValueType = T;
+};
+
+template<bool flag, typename T, typename U>
+struct Select {
+    using Result = T;
+};
+
+template<typename T, typename U>
+struct Select<false, T, U> {
+    using Result = U;
+};
+
+template<typename T, bool isPolymorphic>
 class NiftyContainer {
 private:
     void DoSomething(T* pObj, Int2Type<true>) {
@@ -22,6 +42,14 @@ public:
     void DoSomething(T* pObj) {
         DoSomething(pObj, Int2Type<isPolymorphic>());
     }
+
+public:
+    using Traits = NiftyContainerValueTraits<T, isPolymorphic>;
+    using ValueType = typename Traits::ValueType;
+
+    // or
+    using ValueType1 = typename Select<isPolymorphic, T*, T>::Result;
+
 };
 
 template<typename T>
