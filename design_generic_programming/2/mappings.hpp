@@ -1,3 +1,6 @@
+#ifndef mappings_hpp
+#define mappings_hpp
+
 namespace mappings {
 
 template<int v>
@@ -95,3 +98,5 @@ Widget* Create<Widget, U>(const U& arg) {
 //        ^     ~~~~~~~~~~~
 
 }
+
+#endif // mapping_hpp

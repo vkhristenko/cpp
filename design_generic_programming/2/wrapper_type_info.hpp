@@ -35,4 +35,12 @@ bool operator<=(const TypeInfo&, const TypeInfo&);
 bool operator>(const TypeInfo&, const TypeInfo&);
 bool operator>=(const TypeInfo&, const TypeInfo&);
 
+void FunWithWrapper(Base* pObj) {
+    TypeInfo info = typeid(Derived);
+
+    if (typeid(*pObj) == info) {
+        // ... pBase actually points to a Derived object
+    }
+}
+
 }
