@@ -2,7 +2,8 @@ class Foo {
 public:
     int value;
 
-    explicit Foo(int value) : value(value) {}
+//    explicit Foo(int value) : value(value) {}
+    Foo(int value) : value(value) {}
 
     int get() const { return value; }
 };
