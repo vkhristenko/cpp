@@ -81,6 +81,67 @@ public:
     enum { value = temp == -1 ? -1 : 1 + temp };
 }
 
+template<class TList, class T>
+struct Append;
+
+template<>
+struct Append<NullType, NullType> {
+    typedef NullType Result;
+};
+
+template<class T>
+struct Append<NullType, T> {
+    typedef typename Make<T>::type Result;
+};
+
+template<class Head, class Tail>
+struct Append<NullType, TypeList<Head, Tail>> {
+    typedef TypeList<Head, Tail> Result;
+};
+
+template<class Head, class Tail, class T>
+struct Append<TypeList<Head, Tail>, T> {
+    typedef TypeList<Head, typename Append<Tail, T>> Result;
+};
+
+template<class TList, class T>
+struct Erase;
+
+template<typename T>
+struct Erase<NullType, T> {
+    typedef NullType Result;
+};
+
+template<class T, class Tail>
+struct Erase<TypeList<T, Tail>, T> {
+    typedef Tail Result;
+};
+
+template<class Head, class Tail, class T>
+struct Erase<TypeList<Head, Tail>, T> {
+    typedef TypeList<Head, typename Erase<Tail, T>::Result> Result;
+};
+
+template<class TList, class T>
+struct EraseAll;
+
+template<class T> 
+struct EraseAll<NullType, T> {
+    typedef NullType Result;
+};
+
+template<class T, class Tail>
+struct Erase<TypeList<T, Tail>, T> {
+    typedef typename EraseAll<Tail, T>::Result Result;
+};
+
+template<class Head, class Tail, class T>
+struct Erase<TypeList<Head, Tail>, T> {
+    typedef TypeList<Head, typename EraseAll<Tail, T>::Result> Result;
+};
+
+templ
+
 }
 
 #define TYPELIST_1(T1) TL::make<T1>::type
