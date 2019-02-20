@@ -26,12 +26,12 @@ public:
 };
 
 #define SUPERSUBCLASS(T, U)\
-    (Conversion<const U*, const T*>::exists && \
-    !Conversion<const T*, const void*>::sameType)
+    (::convertability::Conversion<const U*, const T*>::exists && \
+    !::convertability::Conversion<const T*, const void*>::sameType)
 
 #define SUPERSUBCLASS_STRICT(T, U)\
     (SUPERSUBCLASS(T, U) && \
-    !Conversion<const T, const U>::sameType)
+    !::convertability::Conversion<const T, const U>::sameType)
 
 }
 

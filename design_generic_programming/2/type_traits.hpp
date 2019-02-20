@@ -7,6 +7,30 @@ OutIt Copy1(InIt first, InIt last, OutIt result) {
         *result = *first;
 }
 
+namespace mine {
+
+template<class T>
+struct propogate_ref {
+    using type = T&;
+};
+
+template<class T>
+struct propogate_const {
+    using type = const T;
+};
+
+template<class T>
+struct propogate_const<const T> {
+    using type = const T;
+};
+
+template<class T>
+struct propogate_ref<T&> {
+    using type = T&;
+};
+
+}
+
 template<typename T>
 class TypeTraits {
 private:
