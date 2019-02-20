@@ -2,7 +2,6 @@
 #define type_lists_hpp
 
 #include "../2/convertability.hpp"
-#include "../2/mappings.hpp"
 
 template<class T, class U>
 struct TypeList {
@@ -197,39 +196,13 @@ struct ReplaceAll<TypeList<Head, Tail>, T, U> {
     typedef TypeList<Head, typename ReplaceAll<Tail, T, U>::Result> Result;
 };
 
-template<class TList, class T>
-struct MostDerived;
-
-template<class T>
-struct MostDerived<NullType, T> {
-    typedef T Result;
-};
-
-template<class Head, class Tail, class T>
-struct MostDerived<TypeList<Head, Tail>, T> {
-private:
-    typedef MostDerived<Tail, T>::Result Candidate;
-
-public:
-    typedef Select<SUPERSUBCLASS(Candidate, Head), Head, Candidate>::Result Result;
-};
-
 template<class TList>
 struct DerivedToFront;
+
 
 template<>
 struct DerivedToFront<NullType> {
     typedef NullType Result;
-};
-
-template<class Head, class Tail>
-struct DerivedToFront<TypeList<Head, Tail>> {
-private:
-    typedef typename MostDerived<Tail, Head>::Result TheMostDerived;
-    typedef typename Replace<Tail, TheMostDerived, Head>::Result L;
-
-public:
-    typedef TypeList<TheMostDerived, L> Result;
 };
 
 }
