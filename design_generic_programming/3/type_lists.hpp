@@ -158,6 +158,42 @@ public:
     typedef TypeList<Head, L2> Result;
 };
 
+template<class TList, class T, class U> 
+struct Replace;
+
+template<class T, class U>
+struct Replace<NullType, T, U> {
+    typedef NullType Result;
+};
+
+template<class T, class Tail, class U> 
+struct Replace<TypeList<T, Tail>, T, U> {
+    typedef TypeList<U, Tail> Result;
+};
+
+template<class Head, class Tail, class T, class U>
+struct Replace<TypeList<Head, Tail>, T, U> {
+    typedef TypeList<Head, typename Replace<Tail, T, U>::Result> Result;
+};
+
+template<class TList, class T, class U>
+struct ReplaceAll;
+
+template<class T, class U>
+struct ReplaceAll<NullType, T, U> {
+    typedef NullType Result;
+};
+
+template<class T, class Tail, class U>
+struct ReplaceAll<TypeList<T, Tail>, T, U> {
+    typedef TypeList<U, typename ReplaceAll<Tail, T, U>::Result> Result;
+};
+
+template<class Head, class Tail, class T, class U>
+struct ReplaceAll<TypeList<Head, Tail>, T, U> {
+    typedef TypeList<Head, typename ReplaceAll<Tail, T, U>::Result> Result;
+};
+
 }
 
 #define TYPELIST_1(T1) TL::make<T1>::type
