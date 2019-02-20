@@ -1,0 +1,63 @@
+#ifndef class_gen_hpp
+#define class_gen_hpp
+
+#include "type_lists.hpp"
+
+template<class TList, template<class> class Unit>
+class GenScatterHierarchy;
+
+// GenScatterHierarchy specialization: TypeList to Unit
+template<class T1, class T2, template<class> class Unit>
+class GenScatterHierarchy<TypeList<T1, T2>, Unit> 
+    : public GenScatterHierarchy<T1, Unit>
+    , public GenScatterHierarchy<T2, Unit>
+{
+public:
+    typedef TypeList<T1, T2> TList;
+    typedef GenScatterHierarchy<T1, Unit> LeftBase;
+    typedef GenScatterHierarchy<T2, Unit> RightBase;
+    template<class T> struct Rebind {
+        typedef Unit<T> Result;
+    };
+};
+
+// pass an atomic type (non-typelist) to Unit
+template<class AtomicType, template<class> class Unit>
+class GenScatterHierarchy : public Unit<AtomicType> {
+    typedef Unit<AtomicType> LeftBase;
+};
+
+// do nothign for NullType
+template<template<class> class Unit>
+class GenScatterHierarchy<NullType, Unit> {};
+
+namespace internal {
+
+template<class H>
+struct FieldTraits;
+
+template<>
+struct FieldTraits<GenScatterHierarcy<TList, Unit>> {
+
+};
+
+template
+struct FieldTraits<GenScatterHierarchy<AtomicType, Unit<AtomicType>>> {
+    template<class T>
+    struct Rebind;
+
+    template<>
+    struct Rebind<AtomicType> {
+        typedef Result Unit<AtomicType>;
+    };
+};
+
+}
+
+template<class T, class H>
+typename internal::FieldTraits<H>::Rebind<T>::Result&
+Field(H& obj) {
+    return obj;
+}
+
+#endif // class_gen_hpp

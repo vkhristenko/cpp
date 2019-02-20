@@ -3,6 +3,7 @@
 
 #include "../2/convertability.hpp"
 #include "../2/mappings.hpp"
+#include "../2/types.hpp"
 
 template<class T, class U>
 struct TypeList {
@@ -82,7 +83,7 @@ private:
 
 public:
     enum { value = temp == -1 ? -1 : 1 + temp };
-}
+};
 
 template<class TList, class T>
 struct Append;
@@ -104,7 +105,7 @@ struct Append<NullType, TypeList<Head, Tail>> {
 
 template<class Head, class Tail, class T>
 struct Append<TypeList<Head, Tail>, T> {
-    typedef TypeList<Head, typename Append<Tail, T>> Result;
+    typedef TypeList<Head, typename Append<Tail, T>::Result> Result;
 };
 
 template<class TList, class T>
@@ -134,12 +135,12 @@ struct EraseAll<NullType, T> {
 };
 
 template<class T, class Tail>
-struct Erase<TypeList<T, Tail>, T> {
+struct EraseAll<TypeList<T, Tail>, T> {
     typedef typename EraseAll<Tail, T>::Result Result;
 };
 
 template<class Head, class Tail, class T>
-struct Erase<TypeList<Head, Tail>, T> {
+struct EraseAll<TypeList<Head, Tail>, T> {
     typedef TypeList<Head, typename EraseAll<Tail, T>::Result> Result;
 };
 
@@ -208,10 +209,10 @@ struct MostDerived<NullType, T> {
 template<class Head, class Tail, class T>
 struct MostDerived<TypeList<Head, Tail>, T> {
 private:
-    typedef MostDerived<Tail, T>::Result Candidate;
+    typedef typename MostDerived<Tail, T>::Result Candidate;
 
 public:
-    typedef Select<SUPERSUBCLASS(Candidate, Head), Head, Candidate>::Result Result;
+    typedef typename mappings::Select<SUPERSUBCLASS(Candidate, Head), Head, Candidate>::Result Result;
 };
 
 template<class TList>
