@@ -1,3 +1,6 @@
+#ifndef convertability_hpp
+#define convertability_hpp
+
 namespace convertability {
 
 template<class T, class U>
@@ -31,3 +34,5 @@ public:
     !Conversion<const T, const U>::sameType)
 
 }
+
+#endif // convertability_hpp
