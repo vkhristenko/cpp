@@ -140,7 +140,23 @@ struct Erase<TypeList<Head, Tail>, T> {
     typedef TypeList<Head, typename EraseAll<Tail, T>::Result> Result;
 };
 
-templ
+template<class TList>
+struct NoDuplicates;
+
+template<>
+struct NoDuplicates<NullType> {
+    typedef NullType Result;
+};
+
+template<class Head, class Tail>
+struct NoDuplicates<TypeList<Head, Tail>> {
+private:
+    typedef typename NoDuplicates<Tail>::Result L1;
+    typedef typename Erase<L1, Head>::Result L2;
+
+public:
+    typedef TypeList<Head, L2> Result;
+};
 
 }
 
