@@ -12,6 +12,19 @@ struct Widget {};
 
 typedef GenScatterHierarchy<TL::Make<int, std::string, Widget>::type, Holder>
     WidgetInfo;
+typedef Tuple<TL::Make<int, std::string, double>::type> MyTuple;
+
+template<class T, class Base>
+class EventHandler : public Base {
+public:
+    virtual void OnEvent(T& obj, int eventId);
+};
+
+struct Window{};
+struct Button{};
+struct ScrollBar{};
+typedef GenLinearHierarchy<TL::Make<Window, Button, ScrollBar>, EventHandler>
+    MyEventHandler;
 
 void test0() {
     WidgetInfo obj;
@@ -37,6 +50,13 @@ void __test1() {
     using some_type = typename S::template Rebind<float>::Result;
 }
 
+void test2() {
+    MyTuple tup;
+    Field2<0>(tup) = 15;
+    auto& i = Field2<0>(tup);
+    std::cout << "i = " << i << std::endl;
+}
+
 void test1() {
     __test1<Some<int>>();
 }
@@ -44,5 +64,6 @@ void test1() {
 int main() {
     test0();
     test1();
+    test2();
     return 0;
 }
