@@ -1,6 +1,8 @@
 #ifndef small_object_hpp
 #define small_object_hpp
 
+#include "../6/singleton.hpp"
+
 // nothing is private - chunk is a plain old data (pod) structure 
 // structure defined inside FixedAllocator 
 // and manipulated only by it
@@ -104,6 +106,29 @@ public:
 
 private:
     std::vector<FixedAllocator> pool_;
+    FixedAllocator* pLastAlloc_;
+    FixedAllocator* pLastDealloc_;
 };
+
+template<template<class T> class ThreadingModel>
+class SmallObject : public ThreadingModel<SmallObject> {
+public:
+    static void* operator new(std::size_t size);
+    static void operator delete(void* p, std::size_t size);
+    virtual ~SmallObject() {}
+};
+
+template<template<class T> class ThreadingModel>
+void* SmallObject::operator new(std::size_t size) {
+    typedef Singleton<SmallObjectAllocator> MyAlloc;
+    Lock lock;
+    return MyAlloc::Instance().Allocate(size);
+}
+
+void SmallObject::operator delete(void* p, std::size_t size) {
+    typedef Singleton<SmallObjectAllocator> MyAlloc;
+    Lock lock;
+    return MyAlloc::Instance().Deallocate(p, size);
+}
 
 #endif // small_object_hpp
