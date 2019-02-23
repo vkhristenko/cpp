@@ -5,7 +5,7 @@
 #include "functor.hpp"
 
 void test0() {
-    Functor<int, TL::Make<int, std::string>> func;
+    Functor<int, TL::Make<int, double>::type> func;
 }
 
 int main() {
