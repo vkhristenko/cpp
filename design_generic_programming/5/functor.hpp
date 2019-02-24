@@ -44,7 +44,11 @@ public:
     Functor& operator=(Functor const&);
     explicit Functor(std::unique_ptr<Impl> spImpl);
 
-private:
+    template<class Fun>
+    Functor(const Fun& fun);
+
+public:
+    typedef R ResultType;
     typedef TList ParmList;
     typedef typename TL::TypeAtNonStrict<TList, 0, EmptyType>::Result Parm1;
     typedef typename TL::TypeAtNonStrict<TList, 1, EmptyType>::Result Parm2;
@@ -90,6 +94,40 @@ Functor<R, TList>& Functor<R, TList>::operator=(Functor<R, TList> const& other) 
 template<typename R, class TList>
 Functor<R, TList>::Functor(std::unique_ptr<Impl> ptr)
     : spImpl_{std::move(ptr)}
+{}
+
+template<class ParentFunctor, typename Fun>
+class FunctorHandler 
+    : public FunctorImpl<
+        typename ParentFunctor::ResultType,
+        typename ParentFunctor::ParmList>
+{
+public:
+    typedef typename ParentFunctor::ResultType ResultType;
+
+    FunctorHandler(const Fun& fun) : fun_{fun} {}
+    FunctorHandler* Clone() const {
+        return new FunctorHandler{*this};
+    }
+    ResultType operator()() {
+        return fun_();
+    }
+    ResultType operator()(typename ParentFunctor::Parm1 p1) {
+        return fun_(p1);
+    }
+    ResultType operator()(typename ParentFunctor::Parm1 p1,
+                          typename ParentFunctor::Parm2 p2) {
+        return fun_(p1, p2);
+    }
+
+private:
+    Fun fun_;
+};
+
+template<typename R, class TList>
+template<typename Fun>
+Functor<R, TList>::Functor(const Fun& fun)
+    : spImpl_{new FunctorHandler<Functor, Fun>{fun}}
 {}
 
 #endif // functor_hpp

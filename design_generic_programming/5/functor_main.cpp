@@ -5,7 +5,9 @@
 #include "functor.hpp"
 
 void test0() {
-    Functor<int, TL::Make<int, double>::type> func;
+    Functor<int, TL::Make<int, double>::type> func{[](int a, double b) -> int { return static_cast<int>(b) + a; }};
+    auto result = func(3, 8.0);
+    std::cout << "result = " << result << std::endl;
 }
 
 int main() {
