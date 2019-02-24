@@ -15,7 +15,8 @@ public:
 };
 
 template<typename R, typename P1>
-class FunctorImpl<R, TL::Make<P1>> {
+//class FunctorImpl<R, type_list_t<P1>> {
+class FunctorImpl<R, TypeList<P1, NullType>> {
 public:
     virtual R operator()(P1) = 0;
     virtual FunctorImpl* Clone() const = 0;
@@ -23,7 +24,8 @@ public:
 };
 
 template<typename R, typename P1, typename P2>
-class FunctorImpl<R, TL::Make<P1, P2>> {
+//class FunctorImpl<R, type_list_t<P1, P2>> {
+class FunctorImpl<R, TypeList<P1, TypeList<P2, NullType>>> {
 public:
     virtual R operator()(P1, P2) = 0;
     virtual FunctorImpl* Clone() const = 0;
@@ -76,12 +78,12 @@ Functor<R, TList>::Functor()
 
 template<typename R, class TList>
 Functor<R, TList>::Functor(Functor<R, TList> const& other) 
-    : spImpl_{other->Clone()}
+    : spImpl_{other.spImpl_->Clone()}
 {}
 
 template<typename R, class TList>
 Functor<R, TList>& Functor<R, TList>::operator=(Functor<R, TList> const& other) {
-    spImpl_.reset(other->Clone());
+    spImpl_.reset(other.spImpl_->Clone());
     return *this;
 }
 

@@ -253,10 +253,10 @@ public:
 
 }
 
-#define TYPELIST_1(T1) TL::make<T1>::type
-#define TYPELIST_2(T1, T2) TL::make<T1, T2>::type
-#define TYPELIST_3(T1, T2, T3) TL::make<T1, T2, T3>::type
-#define TYPELIST_4(T1, T2, T3, T4) TL::make<T1, T2, T3, T4>::type
-#define TYPELIST_5(T1, T2, T3, T4, T5) TL::make<T1, T2, T3, T4, T5>::type
+#define TYPELIST_1(T1) TL::Make<T1>::type
+#define TYPELIST_2(T1, T2) TL::Make<T1, T2>::type
+#define TYPELIST_3(T1, T2, T3) TL::Make<T1, T2, T3>::type
+#define TYPELIST_4(T1, T2, T3, T4) TL::Make<T1, T2, T3, T4>::type
+#define TYPELIST_5(T1, T2, T3, T4, T5) TL::Make<T1, T2, T3, T4, T5>::type
 
 #endif // type_lists_hp
