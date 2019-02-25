@@ -47,6 +47,9 @@ public:
     template<class Fun>
     Functor(const Fun& fun);
 
+    template<typename PointerToObj, typename PointerToMemFn>
+    Functor(const PointerToObj& pObj, PointerToMemFn pMemFn);
+
 public:
     typedef R ResultType;
     typedef TList ParmList;
@@ -124,10 +127,48 @@ private:
     Fun fun_;
 };
 
+template<class ParentFunctor, typename PointerToObj,
+    typename PointerToMemFn>
+class MemFunHandler 
+    : public FunctorImpl<
+        typename ParentFunctor::ResultType,
+        typename ParentFunctor::ParmList>
+{
+public:
+    typedef typename ParentFunctor::ResultType ResultType;
+
+    MemFunHandler(const PointerToObj& pObj, PointerToMemFn pMemFn)
+        : pObj_{pObj}, pMemFn_{pMemFn} {}
+
+    MemFunHandler* Clone() const { return new MemFunHandler{*this};}
+    ResultType operator()() {
+        return ((*pObj_).*pMemFn_)();
+    }
+
+    ResultType operator()(typename ParentFunctor::Parm1 p1) {
+        return ((*pObj_).*pMemFn_)(p1);
+    }
+
+    ResultType operator()(typename ParentFunctor::Parm1 p1,
+                          typename ParentFunctor::Parm2 p2) {
+        return ((*pObj_).*pMemFn_)(p1, p2);
+    }
+
+private:
+    PointerToObj pObj_;
+    PointerToMemFn pMemFn_;
+};
+
 template<typename R, class TList>
 template<typename Fun>
 Functor<R, TList>::Functor(const Fun& fun)
     : spImpl_{new FunctorHandler<Functor, Fun>{fun}}
+{}
+
+template<typename R, class TList>
+template<typename PointerToObj, typename PointerToMemFn>
+Functor<R, TList>::Functor(const PointerToObj& pObj, PointerToMemFn pMemFn)
+    : spImpl_{new MemFunHandler<Functor, PointerToObj, PointerToMemFn>{pObj, pMemFn}}
 {}
 
 #endif // functor_hpp

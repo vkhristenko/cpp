@@ -33,8 +33,19 @@ void test1() {
     std::cout << "result = " << s1(1,1) << std::endl;
 }
 
+const char* TestFunction(double, double) {
+    static const char buffer[] = "hello, world!";
+    return buffer;
+}
+
+void test2() {
+    Functor<std::string, TL::Make<int, int>::type> cmd{&TestFunction};
+    std::cout << cmd(10, 10).substr(7) << std::endl;
+}
+
 int main() {
     test0();
     test1();
+    test2();
     return 0;
 }
