@@ -43,9 +43,21 @@ void test2() {
     std::cout << cmd(10, 10).substr(7) << std::endl;
 }
 
+const char* Fun(int i, int j) {
+    std::cout << "Fun(" << i << ", " << j << ") called\n";
+    return "0";
+}
+
+void test3() {
+    Functor<const char*, TL::Make<char, int>::type> f1{&Fun};
+    Functor<std::string, TL::Make<double>::type> f2{BindFirst(f1, 10)};
+    f2(15);
+}
+
 int main() {
     test0();
     test1();
     test2();
+    test3();
     return 0;
 }

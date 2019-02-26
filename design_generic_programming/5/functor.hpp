@@ -32,6 +32,14 @@ public:
     virtual ~FunctorImpl() {}
 };
 
+template<typename R, typename P1, typename P2, typename P3>
+class FunctorImpl<R, TypeList<P1, TypeList<P2, TypeList<P3, NullType>>>> {
+public:
+    virtual R operator()(P1, P2, P3) = 0;
+    virtual FunctorImpl* Clone() const = 0;
+    virtual ~FunctorImpl() {}
+};
+
 template<typename R, class TList>
 class Functor {
 public:
@@ -53,6 +61,7 @@ public:
 public:
     typedef R ResultType;
     typedef TList ParmList;
+    typedef ParmList Arguments;
     typedef typename TL::TypeAtNonStrict<TList, 0, EmptyType>::Result Parm1;
     typedef typename TL::TypeAtNonStrict<TList, 1, EmptyType>::Result Parm2;
     typedef typename TL::TypeAtNonStrict<TList, 2, EmptyType>::Result Parm3;
@@ -72,6 +81,18 @@ public:
 
     R operator()(Parm1 p1, Parm2 p2) {
         return (*spImpl_)(p1, p2);
+    }
+    
+    R operator()(Parm1 p1, Parm2 p2, Parm3 p3) {
+        return (*spImpl_)(p1, p2, p3);
+    }
+    
+    R operator()(Parm1 p1, Parm2 p2, Parm3 p3, Parm4 p4) {
+        return (*spImpl_)(p1, p2, p3, p4);
+    }
+    
+    R operator()(Parm1 p1, Parm2 p2, Parm3 p3, Parm4 p4, Parm5 p5) {
+        return (*spImpl_)(p1, p2, p3, p4, p5);
     }
 
 private:
@@ -170,5 +191,59 @@ template<typename PointerToObj, typename PointerToMemFn>
 Functor<R, TList>::Functor(const PointerToObj& pObj, PointerToMemFn pMemFn)
     : spImpl_{new MemFunHandler<Functor, PointerToObj, PointerToMemFn>{pObj, pMemFn}}
 {}
+
+template<class Incoming>
+class BinderFirst 
+    : public FunctorImpl<typename Incoming::ResultType,
+        typename Incoming::Arguments::Tail>
+{
+    typedef Functor<typename Incoming::ResultType,
+        typename Incoming::Arguments::Tail> Outgoing;
+    typedef typename Incoming::Parm1 Bound;
+    typedef typename Incoming::ResultType ResultType;
+
+public:
+    BinderFirst(const Incoming& fun, Bound bound) 
+        : fun_{fun}, bound_{bound}
+    {}
+
+    BinderFirst* Clone() const { return new BinderFirst{*this}; }
+    ResultType operator()() {
+        return fun_(bound_);
+    }
+
+    ResultType operator()(typename Outgoing::Parm1 p1) {
+        return fun_(bound_, p1);
+    }
+    ResultType operator()(typename Outgoing::Parm1 p1,
+                          typename Outgoing::Parm2 p2) {
+        return fun_(bound_, p1, p2);
+    }
+
+private:
+    Incoming fun_;
+    Bound bound_;
+};
+
+namespace Private {
+
+template<class Fctor>
+struct BinderFirstTraits {
+    typedef Functor<typename Fctor::ResultType, typename Fctor::Arguments::Tail> 
+        BoundFunctorType;
+};
+
+}
+
+template<class Fctor>
+typename Private::BinderFirstTraits<Fctor>::BoundFunctorType
+BindFirst(
+    const Fctor& fun,
+    typename Fctor::Parm1 bound) {
+    typedef typename 
+        Private::BinderFirstTraits<Fctor>::BoundFunctorType Outgoing;
+    return Outgoing(std::unique_ptr<typename Outgoing::Impl>{
+        new BinderFirst<Fctor>(fun ,bound)});
+}
 
 #endif // functor_hpp
