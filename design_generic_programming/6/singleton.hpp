@@ -1,20 +1,22 @@
 #ifndef singleton_hpp
 #define singleton_hpp
 
-tepmlate<class X>
-class Singleton {
+class SingletonOld {
 public:
-    static X& Instance();
+    static SingletonOld* Instance() {
+        if (!instance_)
+            instance_ = new SingletonOld{};
+        return instance_;
+    }
 
 private:
-    static X instance_;
+    SingletonOld() = default;
+    SingletonOld(const SingletonOld&) = default;
+
+private:
+    static SingletonOld* instance_;
 };
 
-template<class X>
-static 
-X& Singleton<X>::Instance() {
-    return instance_;
-}
-
+SingletonOld* SingletonOld::instance_ = nullptr;
 
 #endif // singleton_hpp
