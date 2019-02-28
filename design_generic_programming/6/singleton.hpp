@@ -52,7 +52,7 @@ public:
                 Create();
         }
 
-        return pInstance_;
+        return *pInstance_;
     }
 
 private:
@@ -67,17 +67,17 @@ private:
 
     virtual ~Singleton() {
         pInstance_ = 0;
-        destroyed = true;
+        destroyed_ = true;
     }
 
-    Singleton pInstance_;
-    bool destroyed_;
+    static Singleton* pInstance_;
+    static bool destroyed_;
 };
 
 }
 
-v1::Singleton::pInstance_ = 0; 
-v1::Singleton::destroyed_ = false;
+v1::Singleton* v1::Singleton::pInstance_ = 0; 
+bool v1::Singleton::destroyed_ = false;
 
 namespace phoenix {
 
@@ -92,7 +92,7 @@ public:
                 Create();
         }
 
-        return pInstance_;
+        return *pInstance_;
     }
 
 private:
@@ -118,7 +118,7 @@ private:
         // reset destroyed_ because we are back in business
         destroyed_ = false;
     }
-    void KillPhoenixSingleton() {
+    static void KillPhoenixSingleton() {
         // make all ashes again
         // - call the destructor by hand
         // it will set pInstance_ to zero and destroyed_ to true
@@ -127,16 +127,105 @@ private:
 
     virtual ~Singleton() {
         pInstance_ = 0;
-        destroyed = true;
+        destroyed_ = true;
     }
 
-    Singleton pInstance_;
-    bool destroyed_;
+    static Singleton* pInstance_;
+    static bool destroyed_;
 };
 
 }
 
-phoenix::Singleton::pInstance_ = 0; 
-phoenix::Singleton::destroyed_ = false;
+phoenix::Singleton* phoenix::Singleton::pInstance_ = 0; 
+bool phoenix::Singleton::destroyed_ = false;
+
+namespace Private {
+
+class LifetimeTracker {
+public:
+    LifetimeTracker(unsigned int x) : longevity_{x} {}
+    virtual ~LifetimeTracker() = 0;
+
+    friend inline bool Compare(
+        unsigned int longevity,
+        const LifetimeTracker* p)
+    { return p->longevity_ > longevity; }
+
+private:
+    unsigned int longevity_;
+};
+
+// definition required 
+//inline LifetimeTracker::~LifetimeTracker() {}
+
+typedef LifetimeTracker** TrackerArray;
+extern TrackerArray pTrackerArray;
+extern unsigned int elements;
+
+// helper destroyer function
+template<typename T>
+struct Deleter {
+    static void Delete(T* pObj)
+    { delete pObj; }
+};
+
+// concrete lifetime tracker for objects of type T
+template<typename T, typename Destroyer>
+class ConcreteLifetimeTracker : public LifetimeTracker {
+public:
+    ConcreteLifetimeTracker(T* p, unsigned int longevity,
+                            Destroyer d)
+        : LifetimeTracker{longevity}
+        , pTracked_{p}
+        , destroyer_{d}
+    {}
+
+    ~ConcreteLifetimeTracker() {
+        destroyer_(pTracked_);
+    }
+
+private:
+    T* pTracked_;
+    Destroyer destroyer_;
+};
+
+static void AtExitFn();
+
+template<typename T, typename Destroyer>
+void SetLongevity(T* pDynObject, unsigned int longevity,
+                  Destroyer d = Private::Deleter<T>::Delete) {
+    TrackerArray pNewArray = static_cast<TrackerArray>(
+        std::realloc(pTrackerArray, sizeof(T) * (elements + 1)));
+    if (!pNewArray) throw std::bad_alloc{};
+
+    LifetimeTracker* p = new ConcreteLifetimeTracker<T, Destroyer>{
+        pDynObject, longevity, d};
+    TrackerArray pos = std::upper_bound(
+        pTrackerArray, pTrackerArray + elements, longevity, Compare);
+    std::copy_backward(pos, pTrackerArray + elements,
+        pTrackerArray + elements + 1);
+
+    *pos = p;
+    ++elements;
+    std::atexit(AtExitFn);
+}
+
+static void AtExitFn() {
+    assert(elements > 0 && pTrackerArray != 0);
+
+    // pick the element at the top of the stack
+    LifetimeTracker* pTop = pTrackerArray[elements - 1];
+    
+    // remove the object off the stack
+    // don't check errors - realloc with less memory 
+    // can't fail
+    pTrackerArray = static_cast<TrackerArray>(
+        std::realloc(pTrackerArray, sizeof(T) * --elements));
+
+    // destroy the element
+    delete pTop;
+}
+
+}
 
 #endif // singleton_hpp
