@@ -228,4 +228,33 @@ static void AtExitFn() {
 
 }
 
+template<class T>
+class SingleThreaded {
+public:
+    typedef T VolatileType;
+};
+
+template<
+    class T,
+    template<class> class CreationPolicy = CreateUseNew,
+    template<class> class lifetimePolicy = DefaultLifetime,
+    template<class> class ThreadingModel = SingleThreaded
+>
+class SingletonHolder {
+public:
+    static T& Instance();
+
+private:
+    // helpers 
+    static void DestroySingleton();
+
+    // protection
+    SingletonHolder();
+
+    // data
+    typedef ThreadingModel<T>::VolatileType InstanceType;
+    static InstanceType* pInstance_;
+    static bool destroyed_;
+};
+
 #endif // singleton_hpp
