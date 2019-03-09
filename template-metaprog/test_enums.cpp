@@ -1,19 +1,27 @@
-enum class Tag : int {
-    aos,
-    soa
+#include <vector>
+
+enum class tag : int {
+    soa,
+    aos
 };
 
-template<enum Tag = Tag::aos>
-struct SomeStruct {
-    Tag tag;
+template<typename T, tag t>
+struct type_wrapper {
+    using type = std::vector<T>;
 };
 
-template<>
-struct SomeStruct<Tag::soa> {};
+template<typename T>
+struct type_wrapper<T, tag::aos> {
+    using type = T;
+};
+
+template<tag t>
+struct SomeData {
+    typename type_wrapper<float, t>::type value_;
+};
 
 void test0() {
-    SomeStruct<Tag::aos> st;
-    SomeStruct<Tag::soa> st1;
+    SomeData<tag::soa> data;
 }
 
 int main() {
