@@ -205,63 +205,6 @@ public:
     { return sp.pointee_; }
     friend inline const StoredType& GetImplRef(const DefaultSPStorage& sp)
     { return sp.pointee_; }
-    friend inline StoredType& GetImplRef(DefaultSPStorage& sp)
-    { return sp.pointee_; }
-
-protected:
-    void Destroy() { delete pointee_; }
-    static StoredType Default() { return nullptr; }
-
-private:
-    StoredType pointee_;
-};
-
-template<class P>
-class RefCounted {
-    unsigned int* pCount_;
-
-protected:
-    RefCounted() : pCount_{new unsigned int {1}} {}
-    P Clone(const P& val) {
-        ++*pCount_;
-        return val;
-    }
-    bool Release(const P&) {
-        if (!--*pCount_) {
-            delete pCount_;
-            return true;
-        }
-
-        return false;
-    }
-
-    enum { destructiveCopy = false };
-};
-
-template<class P>
-class COMRefCounted {
-public:
-    static P Clone(const P& val) {
-        val->AddRef();
-        return val;
-    }
-
-    static bool Release(const P& val) {
-        val->Release();
-        return false;
-    }
-
-    enum { destructiveCopy = false };
-};
-
-template<class P>
-class AllowConversion {
-    enum { allowConv = true };
-
-public:
-    void OnDefault(const P&);
-    void OnDereference(const P&);
-    void OnInit(const P&);
 };
 
 }
