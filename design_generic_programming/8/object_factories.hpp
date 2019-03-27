@@ -69,7 +69,7 @@ template
     template<typename, class> class FactoryErrorPolicy
 >
 class Factory 
-    : public FactorErrorPolicy<IdentifierType, AbstractProduct>
+    : public FactoryErrorPolicy<IdentifierType, AbstractProduct>
 {
 public:
     bool Register(const IdentifierType& id, ProductCreator creator) {
