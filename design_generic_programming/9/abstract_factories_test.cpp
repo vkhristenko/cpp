@@ -8,6 +8,14 @@ typedef v1::AbstractFactory
 >
 AbstractEnemyFactory;
 
+typedef v1::ConcreteFactory
+<
+    AbstractEnemyFactory,
+    v1::OpNewFactoryUnit,
+    TL::Make<v0::SillySoldier, v0::SillyMonster, v0::SillySuperMonster>
+>
+EasyLevelEnemyFactory;
+
 int main() {
     return 0;
 }

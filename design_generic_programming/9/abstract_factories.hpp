@@ -74,4 +74,33 @@ public:
     }
 };
 
+template<class ConcreteProduct, class Base>
+class OpNewFactoryUnit : public Base {
+    typedef typename Base::ProductList BaseProductList;
+
+protected:
+    typedef typename BaseProductList::Tail ProductList;
+
+public:
+    typedef typename BaseProductList::Head AbstractProduct;
+    ConcreteProduct* DoCreate(mappings::Type2Type<AbstractProduct>) {
+        return new ConcreteProduct;
+    }
+};
+
+template
+<
+    class AbstractFact,
+    template<class, class> class Creator = OpNewFactoryUnit,
+    class TList = typename AbstractFact::ProductList
+>
+class ConcreteFactory 
+    : public GenLinearHierarchy<
+        typename TL::Reverse<TList>::Result, Creator, AbstractFact>
+{
+public:
+    typedef typename AbstractFact::ProductList ProductList;
+    typedef TList ConcreteProductList;
+};
+
 }

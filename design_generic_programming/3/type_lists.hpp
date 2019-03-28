@@ -198,6 +198,53 @@ struct Replace<TypeList<Head, Tail>, T, U> {
     typedef TypeList<Head, typename Replace<Tail, T, U>::Result> Result;
 };
 
+template<class TList>
+struct Last;
+
+template<class T>
+struct Last<TypeList<T, NullType>> {
+    using Result = T;
+};
+
+template<class Head, class Tail>
+struct Last<TypeList<Head, Tail>> {
+    using Result = typename Last<Tail>::Result;
+};
+
+template<class TList>
+struct Strip;
+
+template<class T>
+struct Strip<TypeList<T, NullType>> {
+    using Result = NullType;
+};
+
+template<class Head, class Tail> 
+struct Strip<TypeList<Head, Tail>> {
+    using Result = TypeList<Head, typename Strip<Tail>::Result>;
+};
+
+template<class TList>
+struct Reverse;
+
+template<class T>
+struct Reverse<TypeList<T, NullType>> {
+    typedef TypeList<T, NullType> Result;
+};
+
+template<class Head, class Tail>
+struct Reverse<TypeList<Head, Tail>> {
+private:
+    using LastType = typename Last<Tail>::Result;
+    using TailStripped = typename Strip<Tail>::Result;
+
+public:
+    using Result = TypeList<
+        LastType, 
+        typename Reverse<TypeList<Head,TailStripped>>::Result
+    >;
+};
+
 template<class TList, class T, class U>
 struct ReplaceAll;
 
