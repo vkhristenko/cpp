@@ -103,4 +103,41 @@ public:
     typedef TList ConcreteProductList;
 };
 
+template<class ConcreteProduct, class Base>
+class PrototypeFactoryUnit : public Base {
+    typedef typename Base::ProductList BaseProductList;
+
+protected:
+    typedef typename Base::ProductList TailProductList;
+
+public:
+    typedef typename Base::ProductList::Head AbstractProduct;
+    PrototypeFactoryUnit(AbstractProduct* p = nullptr)
+        : pPrototype_{p}
+    {}
+    friend void DoGetPrototype(const PrototypeFactoryUnit& me,
+        AbstractProduct*& pPrototype) {
+        pPrototype = me.pPrototype_;
+    }
+    friend void DoSetPrototype(PrototypeFactoryUnit& me,
+        AbstractProduct* pObj) {
+        me.pPrototype_ = pObj;
+    }
+    template<class U>
+    void GetPrototype(AbstractProduct*& p) {
+        return DoGetPrototype(*this, p);
+    }
+    template<class U>
+    void SetPrototype(U* pObj) {
+        DoSetPrototype(*this, pObj);
+    }
+    AbstractProduct* DoCreate(Type2Type<AbstractProduct>) {
+        assert(pPrototype_);
+        return pPrototype_->Clone();
+    }
+
+private:
+    AbstractProduct* pPrototype_;
+};
+
 }

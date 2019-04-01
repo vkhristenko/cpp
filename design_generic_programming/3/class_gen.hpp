@@ -149,7 +149,7 @@ template<
     template<class, class> class Unit,
     class Root
 >
-class GenLinearHierarchy<TL::Make<T>, Unit, Root>
+class GenLinearHierarchy<TypeList<T, NullType>, Unit, Root>
     : public Unit<T, Root> 
 {};
 
