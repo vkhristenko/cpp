@@ -199,6 +199,14 @@ struct Replace<TypeList<Head, Tail>, T, U> {
 };
 
 template<class TList>
+struct Head;
+
+template<class Head, Tail> 
+struct Head<TypeList<Head, Tail>> { 
+    using Result = Head;
+}
+
+template<class TList>
 struct Last;
 
 template<class T>

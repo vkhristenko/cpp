@@ -1,3 +1,6 @@
+#include <iostream>
+#include <exception>
+
 class DocElementVisitor;
 
 class DocElement {
@@ -27,23 +30,29 @@ public:
 
 class DocElementVisitor {
 public:
-    virtual void VisitParagraph(Paragraph&) = 0;
-    virtual void VisitRasterBitmap(RasterBitmap&) = 0;
+    virtual void Visit(Paragraph&) = 0;
+    virtual void Visit(RasterBitmap&) = 0;
+
+    virtual void Visit(DocElement&) = 0;
 };
 
 class DocStats : public DocElementVisitor {
 public:
-    void VisitParagraph(Paragraph& par) override {
+    void Visit(Paragraph& par) override {
         chars_ += par.NumChars();
         words_ += par.NumWords();
     }
 
-    void VisitRasterBitmap(RasterBitmap&) override {
+    void Visit(RasterBitmap&) override {
         ++images_;
     }
 
     void Print() const {
         std::cout << chars_ << " " << words_ << " " << images_ << std::endl;
+    }
+
+    void Visit(DocElement&) override { 
+        throw std::runtime_error{"unimplemented"}; 
     }
 
 private:
@@ -53,7 +62,7 @@ private:
 };
     
 void Paragraph::Accept(DocElementVisitor& v) { 
-    v.VisitParagraph(*this); 
+    v.Visit(*this); 
 }
 
 void Paragraph::SetFontSize(int size) {
@@ -65,16 +74,16 @@ int Paragraph::GetFontSize() {
 }
 
 void RasterBitmap::Accept(DocElementVisitor& v) { 
-    v.VisitRasterBitmap(*this);
+    v.Visit(*this);
 }
 
 class IncrementFontSize : public DocElementVisitor {
 public:
-    void VisitParagraph(Paragraph& par) override {
+    void Visit(Paragraph& par) override {
         par.SetFontSize(par.GetFontSize() + 1);
     }
 
-    void VisitRasterBitmap(RasterBitmap&) override {
+    void Visit(RasterBitmap&) override {
         // do nothing
     }
 };
