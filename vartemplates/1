@@ -29,7 +29,7 @@ template<
     template<typename...> typename X, typename... T1s,
     template<typename...> typename Y, typename... T2s
 >
-struct Some<X<T1s...>, Y<T2s...>> {
+struct Some1 {
 };
 
 void test0() {
