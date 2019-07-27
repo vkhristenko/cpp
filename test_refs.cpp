@@ -8,6 +8,11 @@ int const& test0_() {
 void test0() {
     auto const* ptrx = &(test0_());
     std::cout << "x = " << *ptrx << std::endl;
+
+    int x=1, y=2;
+    bool q = true;
+    int& ref = q ? x : y;
+    std::cout << "ref = " << ref << std::endl;
 }
 
 int main() {
