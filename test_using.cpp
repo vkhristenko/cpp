@@ -21,6 +21,22 @@ struct Derived : public Base {
     void swap(DerivedTestClass&) {}
 };
 
+template<typename T>
+struct A {};
+
+template<typename T>
+struct B : public A<T> {
+    using A<T>::A;
+};
+
+enum class Tag : int8_t {
+    SoA = 0,
+    Ptr = 1,
+};
+
+template<Tag tag>
+struct TestStruct {};
+
 int main() {
     auto baseTest = BaseTestClass{};
     auto base = Base{};
@@ -36,4 +52,7 @@ int main() {
     derived.swap(baseTest);
     derived.swap(preBaseTest);
     derived.swap(stdvector);
+
+    A<int> a;
+    B<int> b;
 }
