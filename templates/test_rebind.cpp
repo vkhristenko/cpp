@@ -48,14 +48,29 @@ struct PolicyDevice {
 void test0() {
 }
 
-enum class Types : int {
-    Int = 0,
-    Float = 1,
+template<typename T>
+struct Vector {};
+
+template<> struct Vector<int>;
+
+template<typename T>
+struct TestRebind {
+
+    template<typename U>
+    struct Rebind {
+        using type = TestRebind<U>;
+    };
 };
-std::tuple<int, float>
+
+template<typename T, typename U>
+void func() {
+    using type = typename T::template Rebind<U>::type;
+}
 
 int main() {
     test0();
+
+    TestRebind<int>::Rebind<float>::type value;
 
     return 0;
 }
