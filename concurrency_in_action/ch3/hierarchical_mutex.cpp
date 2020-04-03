@@ -9,6 +9,8 @@ int main() {
     test0();
 }
 
+
+
 std::queue<std::exception_ptr> exc_queue;
 
 class hierarchical_mutex {
@@ -52,6 +54,8 @@ public:
         return true;
     }
 };
+
+void func_test() {}
 
 thread_local unsigned long hierarchical_mutex::this_thread_hierarchy_value{ULONG_MAX};
 

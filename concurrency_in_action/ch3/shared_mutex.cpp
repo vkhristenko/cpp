@@ -1,4 +1,6 @@
 #include <map>
+#include <vector>
+#include <thread>
 #include <string>
 #include <mutex>
 
@@ -22,3 +24,23 @@ struct dns_cache {
         entries[domain] = dns_details;
     }
 };
+
+void test0() {
+    dns_cache cache;
+    std::vector<std::thread> ts;
+    for (int i=0; i<100; i++)
+        ts.push_back(
+            std::thread{&dns_cache::update_or_add_entry, &cache, 
+                std::to_string(i), dns_entry{}});
+
+    std::vector<std::thread> cts;
+    for (int i=0; i<100; i++)
+        cts.push_back(std::thread{&dns_cache::find_entry, &cache, std::to_string(i)});
+
+    for (auto &t : ts) t.join();
+    for (auto &t : cts) t.join();
+}
+
+int main() {
+    test0();
+}
