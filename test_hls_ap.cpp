@@ -14,5 +14,10 @@ int main() {
     ap_uint<4> some((value, value, value, value));
     std::cout << some << std::endl;
 
+    ap_uint<4> val = 15;
+    ap_uint<16> valmore = val;
+    std::cout << val << "  " << valmore << std::endl;
+    std::cout << valmore(3, 0) << "  " << valmore(15, 4) << std::endl;
+
     return 0;
 }
